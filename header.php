@@ -9,6 +9,12 @@
 <body <?php body_class(); ?>>
     <header class="novel-header">
         <h1 class="site-title"><a href="<?php echo home_url(); ?>"><?php bloginfo('name'); ?></a></h1>
+        <div class="dark-mode-switch">
+            <label class="switch">
+                <input type="checkbox" id="darkModeToggle">
+                <span class="slider"></span>
+            </label>
+        </div>
     </header>
     <nav class="novel-nav">
         <?php

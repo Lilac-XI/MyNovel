@@ -1,0 +1,80 @@
+/* ダークモードスイッチ */
+.dark-mode-switch {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 34px;
+}
+.slider:before {
+    position: absolute;
+    content: "☀️";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+}
+input:checked + .slider {
+    background-color: #5d4157;
+}
+input:checked + .slider:before {
+    transform: translateX(26px);
+    content: "🌙";
+}
+
+/* ダークモードのスタイル */
+body.dark-mode {
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+}
+body.dark-mode .novel-header {
+    background-color: #2a2a2a;
+    color: #e0e0e0;
+}
+body.dark-mode .site-title a {
+    color: #b3a0a0;
+}
+body.dark-mode .novel-wrapper {
+    background-color: #2a2a2a;
+    box-shadow: 0 0 10px rgba(255,255,255,0.1);
+}
+body.dark-mode .novel-list-title {
+    color: #b3a0a0;
+}
+body.dark-mode .novel-item {
+    border-bottom-color: #444;
+}
+body.dark-mode .novel-item-title a {
+    color: #b3a0a0;
+}
+body.dark-mode .novel-item-description {
+    color: #999;
+}

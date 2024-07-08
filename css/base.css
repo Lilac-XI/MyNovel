@@ -1,0 +1,43 @@
+/* 基本スタイル */
+body {
+    font-family: 'Noto Sans JP', sans-serif;
+    line-height: 1.8;
+    color: #333;
+    background-color: #fafafa;
+    margin: 0;
+    padding: 0;
+}
+
+/* ヘッダー、ナビゲーション、フッター共通スタイル */
+.novel-header, .novel-nav, .novel-footer {
+    background-color: #ffffff;
+    color: #333;
+    padding: 1rem;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* ヘッダー */
+.novel-header {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+}
+
+.novel-header .site-title {
+    margin: 0;
+    font-size: 1.8rem;
+}
+
+.novel-header .site-title a {
+    color: #5d4157;
+    text-decoration: none;
+}
+
+/* フッター */
+.novel-footer {
+    margin-top: 2rem;
+    font-size: 0.8rem;
+}

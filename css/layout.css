@@ -1,0 +1,69 @@
+/* メインコンテンツ */
+.novel-wrapper {
+    max-width: 800px;
+    margin: 1rem auto;
+    background-color: #ffffff;
+    padding: 1rem;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    border-radius: 5px;
+}
+
+.novel-header-container {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.novel-title, .mypage-title {
+    font-size: 1.8rem;
+    color: #5d4157;
+    text-align: center;
+    margin: 1rem 0;
+}
+
+/* ヘッダー */
+.novel-header {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+}
+
+.novel-header .site-title {
+    margin: 0;
+    font-size: 1.8rem;
+    text-align: center;
+}
+
+/* ダークモードスイッチ */
+.dark-mode-switch {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* ナビゲーション */
+.novel-nav .nav-menu {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.novel-nav .nav-menu li {
+    margin: 0 1rem;
+}
+
+.novel-nav .nav-menu a {
+    color: #5d4157;
+    text-decoration: none;
+    font-size: 1.1rem;
+    transition: color 0.3s;
+}
+
+.novel-nav .nav-menu a:hover {
+    color: #8e7a8e;
+}

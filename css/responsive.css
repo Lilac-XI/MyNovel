@@ -1,0 +1,57 @@
+/* レスポンシブデザイン */
+@media (max-width: 600px) {
+    .novel-header {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        padding: 1rem 60px; /* 右側にスイッチ用のスペースを確保 */
+    }
+
+    .novel-header .site-title {
+        font-size: 1.4rem;
+        text-align: center;
+        width: 100%; /* タイトルが中央に来るようにする */
+    }
+
+    .dark-mode-switch {
+        position: absolute;
+        right: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .novel-wrapper {
+        padding: 0.8rem;
+        margin: 0.8rem;
+    }
+    .novel-title, .mypage-title {
+        font-size: 1.6rem;
+    }
+    .novel-item-info {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .novel-item-info span {
+        margin-bottom: 0.3rem;
+    }
+    .novel-search-sort {
+        width: 100%;
+    }
+    .novel-sort {
+        margin-top: 0.5rem;
+    }
+    .info-item input {
+        width: 100%;
+    }
+    .favorite-button-container {
+        position: static;
+        margin-top: 0.5rem;
+        text-align: right;
+    }
+    .nav-link {
+        padding: 0.3rem;
+        font-size: 0.9rem;
+    }
+}

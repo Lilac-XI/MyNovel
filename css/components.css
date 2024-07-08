@@ -1,0 +1,253 @@
+/* 検索と並び替え */
+.novel-search-sort {
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.novel-search {
+    display: flex;
+    margin-bottom: 0.5rem;
+    width: 100%;
+}
+
+.novel-search input, .info-item input {
+    flex-grow: 1;
+    padding: 0.5rem;
+    font-size: 0.9rem;
+    border: 1px solid #b3a0a0;
+    border-radius: 3px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.novel-search button, .update-button {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    background-color: #5d4157;
+    color: #ffffff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.novel-search button:hover, .update-button:hover {
+    background-color: #8e7a8e;
+}
+
+.novel-sort {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+}
+
+.novel-sort select {
+    padding: 0.5rem;
+    font-size: 0.9rem;
+    border: 1px solid #b3a0a0;
+    border-radius: 3px;
+    background-color: #ffffff;
+    color: #333;
+    width: 100%;
+}
+
+/* 小説リスト */
+.novel-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.novel-item {
+    border-bottom: 1px solid #e6d7e6;
+    padding-top: 0.8rem;
+    padding-bottom: 0.8rem;
+}
+
+.novel-item:last-child {
+    border-bottom: none;
+}
+
+.novel-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.novel-item-title {
+    font-size: 1.2rem;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    flex-grow: 1;
+}
+
+.novel-item-title a {
+    color: #5d4157;
+    text-decoration: none;
+    transition: color 0.3s;
+    word-break: break-word;
+}
+
+.novel-item-title a:hover {
+    color: #8e7a8e;
+    text-decoration: underline;
+}
+
+.novel-item-description {
+    font-size: 0.95rem;
+    color: #4a4a4a;
+    margin: 0;
+    padding: 0.5rem 0;
+    font-weight: 500;
+}
+
+.novel-item-info {
+    font-size: 0.9rem;
+    color: #666;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.novel-item-info a {
+    color: #5d4157;
+    text-decoration: none;
+}
+
+.novel-item-info a:hover {
+    text-decoration: underline;
+}
+
+/* お気に入りボタン */
+.favorite-button-container {
+    position: absolute;
+    bottom: -30px;
+    right: 0;
+}
+
+#favorite-button, .login-to-favorite {
+    display: inline-block;
+    padding: 0.3rem 0.8rem;
+    font-size: 0.9rem;
+    color: #ffffff;
+    background-color: #5d4157;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-decoration: none;
+}
+
+#favorite-button:hover, .login-to-favorite:hover {
+    background-color: #8e7a8e;
+}
+
+/* エピソードナビゲーション */
+.novel-navigation {
+    margin: 1rem 0;
+}
+
+.nav-table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+.nav-cell {
+    border: 1px solid #5d4157;
+    padding: 0;
+}
+
+.nav-cell.toc {
+    width: 20%;
+}
+
+.nav-cell.prev,
+.nav-cell.next {
+    width: 40%;
+}
+
+.nav-link {
+    display: block;
+    padding: 0.5rem;
+    color: #5d4157;
+    text-decoration: none;
+    text-align: center;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.nav-link:hover {
+    background-color: #5d4157;
+    color: #ffffff;
+}
+
+.nav-link.disabled {
+    color: #cccccc;
+    cursor: not-allowed;
+}
+
+.nav-link.disabled:hover {
+    background-color: transparent;
+    color: #cccccc;
+}
+
+.nav-cell.toc .nav-link {
+    background-color: transparent;
+    color: #5d4157;
+}
+
+.nav-cell.toc .nav-link:hover {
+    background-color: #5d4157;
+    color: #ffffff;
+}
+
+/* マイページ用スタイル */
+.favorite-novels, .user-info {
+    margin-bottom: 2rem;
+}
+
+.favorite-novels h2, .user-info h2 {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #5d4157;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid #5d4157;
+    padding-bottom: 0.3rem;
+}
+
+.info-item {
+    margin-bottom: 1rem;
+}
+
+.info-item label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 0.3rem;
+}
+
+.message {
+    display: none;
+    padding: 1rem;
+    margin-top: 1rem;
+    border-radius: 3px;
+    font-weight: bold;
+}
+
+.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}

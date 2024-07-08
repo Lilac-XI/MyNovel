@@ -20,19 +20,28 @@
         $current_index = array_search(get_the_ID(), wp_list_pluck($siblings, 'ID'));
         $prev_post = $current_index > 0 ? $siblings[$current_index - 1] : null;
         $next_post = $current_index < count($siblings) - 1 ? $siblings[$current_index + 1] : null;
-
-        if ($prev_post) {
-            echo '<a href="' . get_permalink($prev_post->ID) . '" class="nav-button">前へ</a>';
-        } else {
-            echo '<span class="nav-button disabled">前へ</span>';
-        }
-        echo '<a href="' . get_permalink($parent_id) . '" class="nav-button">目次</a>';
-        if ($next_post) {
-            echo '<a href="' . get_permalink($next_post->ID) . '" class="nav-button">次へ</a>';
-        } else {
-            echo '<span class="nav-button disabled">次へ</span>';
-        }
         ?>
+        <table class="nav-table">
+            <tr>
+                <td class="nav-cell prev">
+                    <?php if ($prev_post): ?>
+                        <a href="<?php echo get_permalink($prev_post->ID); ?>" class="nav-link"><< 前の話</a>
+                    <?php else: ?>
+                        <span class="nav-link disabled"><< 前の話</span>
+                    <?php endif; ?>
+                </td>
+                <td class="nav-cell toc">
+                    <a href="<?php echo get_permalink($parent_id); ?>" class="nav-link">目次</a>
+                </td>
+                <td class="nav-cell next">
+                    <?php if ($next_post): ?>
+                        <a href="<?php echo get_permalink($next_post->ID); ?>" class="nav-link">次の話 >></a>
+                    <?php else: ?>
+                        <span class="nav-link disabled">次の話 >></span>
+                    <?php endif; ?>
+                </td>
+            </tr>
+        </table>
     </div>
     
     <h1 class="novel-title"><?php the_title(); ?></h1>
@@ -42,19 +51,27 @@
     </div>
     
     <div class="novel-navigation bottom">
-        <?php
-        if ($prev_post) {
-            echo '<a href="' . get_permalink($prev_post->ID) . '" class="nav-button">前へ</a>';
-        } else {
-            echo '<span class="nav-button disabled">前へ</span>';
-        }
-        echo '<a href="' . get_permalink($parent_id) . '" class="nav-button">目次</a>';
-        if ($next_post) {
-            echo '<a href="' . get_permalink($next_post->ID) . '" class="nav-button">次へ</a>';
-        } else {
-            echo '<span class="nav-button disabled">次へ</span>';
-        }
-        ?>
+        <table class="nav-table">
+            <tr>
+                <td class="nav-cell prev">
+                    <?php if ($prev_post): ?>
+                        <a href="<?php echo get_permalink($prev_post->ID); ?>" class="nav-link"><< 前の話</a>
+                    <?php else: ?>
+                        <span class="nav-link disabled"><< 前の話</span>
+                    <?php endif; ?>
+                </td>
+                <td class="nav-cell toc">
+                    <a href="<?php echo get_permalink($parent_id); ?>" class="nav-link">目次</a>
+                </td>
+                <td class="nav-cell next">
+                    <?php if ($next_post): ?>
+                        <a href="<?php echo get_permalink($next_post->ID); ?>" class="nav-link">次の話 >></a>
+                    <?php else: ?>
+                        <span class="nav-link disabled">次の話 >></span>
+                    <?php endif; ?>
+                </td>
+            </tr>
+        </table>
     </div>
 </div>
 

@@ -11,8 +11,18 @@ add_action( 'after_setup_theme', 'novel_theme_setup' );
 // スタイルとスクリプトをキューに追加する関数
 function novel_theme_scripts() {
     wp_enqueue_style( 'style', get_stylesheet_uri() );
+    wp_enqueue_script( 'dark-mode', get_template_directory_uri() . '/js/dark-mode.js', array(), '1.0', true );
 }
 add_action( 'wp_enqueue_scripts', 'novel_theme_scripts' );
+
+function enqueue_custom_styles() {
+    wp_enqueue_style('base-style', get_template_directory_uri() . '/css/base.css');
+    wp_enqueue_style('layout-style', get_template_directory_uri() . '/css/layout.css');
+    wp_enqueue_style('components-style', get_template_directory_uri() . '/css/components.css');
+    wp_enqueue_style('dark-mode-style', get_template_directory_uri() . '/css/dark-mode.css');
+    wp_enqueue_style('responsive-style', get_template_directory_uri() . '/css/responsive.css');
+}
+add_action('wp_enqueue_scripts', 'enqueue_custom_styles');
 
 // カスタム投稿タイプを作成する関数
 function create_novel_post_types() {
@@ -899,5 +909,28 @@ function enqueue_favorite_script() {
     ));
 }
 add_action('wp_enqueue_scripts', 'enqueue_favorite_script');
+
+function get_latest_episode($parent_id) {
+    $args = array(
+        'post_type' => 'novel_child',
+        'meta_query' => array(
+            array(
+                'key' => 'parent_novel',
+                'value' => $parent_id,
+            ),
+        ),
+        'orderby' => 'date',
+        'order' => 'DESC',
+        'posts_per_page' => 1,
+    );
+    $latest_child = new WP_Query($args);
+    if ($latest_child->have_posts()) {
+        $latest_child->the_post();
+        $output = '<a href="' . get_permalink() . '">' . get_the_title() . '</a> (' . get_the_date('Y/n/j') . ')';
+        wp_reset_postdata();
+        return $output;
+    }
+    return '最新話はありません';
+}
 ?>
 
