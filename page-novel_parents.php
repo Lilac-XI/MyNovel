@@ -36,8 +36,11 @@ get_header(); ?>
             while ($novel_parents->have_posts()) : $novel_parents->the_post();
                 ?>
                 <li class="novel-item">
-                    <h3 class="novel-item-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
-                    <p class="novel-item-description"><?php echo wp_trim_words(get_the_excerpt(), 30); ?></p>
+                    <div class="novel-item-header">
+                        <h3 class="novel-item-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
+                        <?php echo do_shortcode('[favorite_button novel_id="' . get_the_ID() . '"]'); ?>
+                    </div>
+                    <p class="novel-item-description"><?php echo wp_trim_words(get_the_excerpt(), 100, "..."); ?></p>
                     <div class="novel-item-info">
                         <?php
                         $args = array(

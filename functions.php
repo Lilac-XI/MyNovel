@@ -422,62 +422,6 @@ function apply_furigana($content) {
 }
 add_filter('the_content', 'apply_furigana', 9);
 
-// 小説子のコンテンツを表示する前に、関連するリンクを追加する関数
-// function add_novel_child_navigation() {
-//     global $post;
-
-//     if (get_post_type($post) !== 'novel_child') {
-//         return '';
-//     }
-
-//     $parent_id = get_post_meta($post->ID, 'parent_novel', true);
-//     if (!$parent_id) {
-//         return '';
-//     }
-
-//     $novel_children = get_posts(array(
-//         'post_type' => 'novel_child',
-//         'meta_query' => array(
-//             array(
-//                 'key' => 'parent_novel',
-//                 'value' => $parent_id,
-//             ),
-//         ),
-//         'orderby' => 'menu_order',
-//         'order' => 'ASC',
-//         'posts_per_page' => -1,
-//     ));
-
-//     $current_index = 0;
-//     foreach ($novel_children as $index => $child) {
-//         if ($child->ID == $post->ID) {
-//             $current_index = $index;
-//             break;
-//         }
-//     }
-
-//     $navigation = '<div class="novel-child-navigation">';
-
-//     // 前のリンク
-//     if ($current_index > 0) {
-//         $prev_post = $novel_children[$current_index - 1];
-//         $navigation .= '<a href="' . get_permalink($prev_post->ID) . '">前へ</a> | ';
-//     }
-
-//     // 目次リンク
-//     $navigation .= '<a href="' . get_permalink($parent_id) . '">目次</a> | ';
-
-//     // 次のリンク
-//     if ($current_index < count($novel_children) - 1) {
-//         $next_post = $novel_children[$current_index + 1];
-//         $navigation .= '<a href="' . get_permalink($next_post->ID) . '">次へ</a>';
-//     }
-
-//     $navigation .= '</div>';
-
-//     return $navigation;
-// }
-
 function enqueue_google_fonts() {
     wp_enqueue_style('google-fonts', 'https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&display=swap', array(), null);
 }
@@ -751,7 +695,7 @@ function search_novel_parents() {
             ?>
             <li class="novel-item">
                 <h3 class="novel-item-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
-                <p class="novel-item-description"><?php echo wp_trim_words(get_the_excerpt(), 30); ?></p>
+                <p class="novel-item-description"><?php echo wp_trim_words(get_the_excerpt(), 100, "..."); ?></p>
                 <div class="novel-item-info">
                     <?php
                     $args = array(
@@ -824,5 +768,136 @@ function custom_modified_date($the_date, $d = '', $post = null) {
     return custom_date_format($modified_date);
 }
 add_filter('get_the_modified_date', 'custom_modified_date', 10, 3);
+
+// ユーザー情報更新用のAjax処理
+function update_user_info() {
+    // nonce チェック
+    check_ajax_referer('update_user_info_nonce', 'security');
+
+    // ユーザーがログインしているか確認
+    if (!is_user_logged_in()) {
+        wp_send_json_error('ログインが必要です。');
+        return;
+    }
+
+    $user_id = get_current_user_id();
+    $username = sanitize_user($_POST['username']);
+    $email = sanitize_email($_POST['email']);
+
+    // ユーザー名とメールアドレスの更新
+    $result = wp_update_user([
+        'ID' => $user_id,
+        'user_login' => $username,
+        'user_email' => $email
+    ]);
+
+    if (is_wp_error($result)) {
+        wp_send_json_error($result->get_error_message());
+    } else {
+        wp_send_json_success('ユーザー情報が更新されました。');
+    }
+}
+add_action('wp_ajax_update_user_info', 'update_user_info');
+
+// マイページ用のJavaScriptを読み込む
+function enqueue_mypage_script() {
+    if (is_page_template('page-mypage.php')) {
+        wp_enqueue_script('mypage-script', get_template_directory_uri() . '/js/mypage.js', array('jquery'), '1.0', true);
+        wp_localize_script('mypage-script', 'mypageAjax', array(
+            'ajax_url' => admin_url('admin-ajax.php'),
+            'nonce' => wp_create_nonce('update_user_info_nonce')
+        ));
+    }
+}
+add_action('wp_enqueue_scripts', 'enqueue_mypage_script');
+
+// お気に入り機能の追加
+function add_favorite_novel() {
+    if (!is_user_logged_in()) {
+        wp_send_json_error('ログインが必要です。');
+        return;
+    }
+
+    $user_id = get_current_user_id();
+    $novel_id = intval($_POST['novel_id']);
+
+    $favorites = get_user_meta($user_id, 'favorite_novels', true);
+    if (!is_array($favorites)) {
+        $favorites = array();
+    }
+
+    if (!in_array($novel_id, $favorites)) {
+        $favorites[] = $novel_id;
+        update_user_meta($user_id, 'favorite_novels', $favorites);
+        wp_send_json_success('お気に入りに追加しました。');
+    } else {
+        wp_send_json_error('すでにお気に入りに追加されています。');
+    }
+}
+add_action('wp_ajax_add_favorite_novel', 'add_favorite_novel');
+
+// お気に入りから削除する機能
+function remove_favorite_novel() {
+    if (!is_user_logged_in()) {
+        wp_send_json_error('ログインが必要です。');
+        return;
+    }
+
+    $user_id = get_current_user_id();
+    $novel_id = intval($_POST['novel_id']);
+
+    $favorites = get_user_meta($user_id, 'favorite_novels', true);
+    if (!is_array($favorites)) {
+        $favorites = array();
+    }
+
+    $key = array_search($novel_id, $favorites);
+    if ($key !== false) {
+        unset($favorites[$key]);
+        update_user_meta($user_id, 'favorite_novels', array_values($favorites));
+        wp_send_json_success('お気に入りから削除しました。');
+    } else {
+        wp_send_json_error('お気に入りに追加されていません。');
+    }
+}
+add_action('wp_ajax_remove_favorite_novel', 'remove_favorite_novel');
+
+// お気に入りボタンのショートコード
+function favorite_button_shortcode($atts) {
+    $atts = shortcode_atts(array(
+        'novel_id' => get_the_ID(),
+    ), $atts, 'favorite_button');
+
+    $novel_id = intval($atts['novel_id']);
+    $user_id = get_current_user_id();
+
+    if (!$user_id) {
+        return '<a href="' . wp_login_url(get_permalink($novel_id)) . '" class="favorite-star" title="ログインしてお気に入りに追加">☆</a>';
+    }
+
+    $favorites = get_user_meta($user_id, 'favorite_novels', true);
+    if (!is_array($favorites)) {
+        $favorites = array();
+    }
+
+    if (in_array($novel_id, $favorites)) {
+        $star = '<span class="favorite-star filled" data-novel-id="' . $novel_id . '" title="お気に入りから削除">★</span>';
+    } else {
+        $star = '<span class="favorite-star empty" data-novel-id="' . $novel_id . '" title="お気に入りに追加">☆</span>';
+    }
+
+    return $star;
+}
+add_shortcode('favorite_button', 'favorite_button_shortcode');
+
+// お気に入りボタン用のJavaScript
+function enqueue_favorite_script() {
+    wp_enqueue_script('favorite-script', get_template_directory_uri() . '/js/favorite.js', array('jquery'), '1.0', true);
+    wp_localize_script('favorite-script', 'favoriteAjax', array(
+        'ajax_url' => admin_url('admin-ajax.php'),
+        'nonce' => wp_create_nonce('favorite_nonce')
+    ));
+}
+add_action('wp_enqueue_scripts', 'enqueue_favorite_script');
 ?>
 
