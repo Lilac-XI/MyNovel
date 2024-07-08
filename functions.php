@@ -1,10 +1,10 @@
 <?php
 // テーマのセットアップを行う関数
 function novel_theme_setup() {
-    add_theme_support( 'title-tag' );
-    register_nav_menus( array(
-        'main-menu' => 'Main Menu',
-    ) );
+    add_theme_support('title-tag');
+    register_nav_menus(array(
+        'main-menu' => 'メインメニュー',
+    ));
 }
 add_action( 'after_setup_theme', 'novel_theme_setup' );
 
@@ -423,60 +423,65 @@ function apply_furigana($content) {
 add_filter('the_content', 'apply_furigana', 9);
 
 // 小説子のコンテンツを表示する前に、関連するリンクを追加する関数
-function add_novel_child_navigation() {
-    global $post;
+// function add_novel_child_navigation() {
+//     global $post;
 
-    if (get_post_type($post) !== 'novel_child') {
-        return '';
-    }
+//     if (get_post_type($post) !== 'novel_child') {
+//         return '';
+//     }
 
-    $parent_id = get_post_meta($post->ID, 'parent_novel', true);
-    if (!$parent_id) {
-        return '';
-    }
+//     $parent_id = get_post_meta($post->ID, 'parent_novel', true);
+//     if (!$parent_id) {
+//         return '';
+//     }
 
-    $novel_children = get_posts(array(
-        'post_type' => 'novel_child',
-        'meta_query' => array(
-            array(
-                'key' => 'parent_novel',
-                'value' => $parent_id,
-            ),
-        ),
-        'orderby' => 'menu_order',
-        'order' => 'ASC',
-        'posts_per_page' => -1,
-    ));
+//     $novel_children = get_posts(array(
+//         'post_type' => 'novel_child',
+//         'meta_query' => array(
+//             array(
+//                 'key' => 'parent_novel',
+//                 'value' => $parent_id,
+//             ),
+//         ),
+//         'orderby' => 'menu_order',
+//         'order' => 'ASC',
+//         'posts_per_page' => -1,
+//     ));
 
-    $current_index = 0;
-    foreach ($novel_children as $index => $child) {
-        if ($child->ID == $post->ID) {
-            $current_index = $index;
-            break;
-        }
-    }
+//     $current_index = 0;
+//     foreach ($novel_children as $index => $child) {
+//         if ($child->ID == $post->ID) {
+//             $current_index = $index;
+//             break;
+//         }
+//     }
 
-    $navigation = '<div class="novel-child-navigation">';
+//     $navigation = '<div class="novel-child-navigation">';
 
-    // 前のリンク
-    if ($current_index > 0) {
-        $prev_post = $novel_children[$current_index - 1];
-        $navigation .= '<a href="' . get_permalink($prev_post->ID) . '">前へ</a> | ';
-    }
+//     // 前のリンク
+//     if ($current_index > 0) {
+//         $prev_post = $novel_children[$current_index - 1];
+//         $navigation .= '<a href="' . get_permalink($prev_post->ID) . '">前へ</a> | ';
+//     }
 
-    // 目次リンク
-    $navigation .= '<a href="' . get_permalink($parent_id) . '">目次</a> | ';
+//     // 目次リンク
+//     $navigation .= '<a href="' . get_permalink($parent_id) . '">目次</a> | ';
 
-    // 次のリンク
-    if ($current_index < count($novel_children) - 1) {
-        $next_post = $novel_children[$current_index + 1];
-        $navigation .= '<a href="' . get_permalink($next_post->ID) . '">次へ</a>';
-    }
+//     // 次のリンク
+//     if ($current_index < count($novel_children) - 1) {
+//         $next_post = $novel_children[$current_index + 1];
+//         $navigation .= '<a href="' . get_permalink($next_post->ID) . '">次へ</a>';
+//     }
 
-    $navigation .= '</div>';
+//     $navigation .= '</div>';
 
-    return $navigation;
+//     return $navigation;
+// }
+
+function enqueue_google_fonts() {
+    wp_enqueue_style('google-fonts', 'https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&display=swap', array(), null);
 }
+add_action('wp_enqueue_scripts', 'enqueue_google_fonts');
 
 // Patreonプラグインの campaign-banner を中央寄せにする
 add_action('wp_enqueue_scripts', 'center_patreon_campaign_banner');
@@ -646,9 +651,10 @@ function append_novel_child_list($content) {
     if (is_singular('novel_parent')) {
         ob_start();
         ?>
-        <div class="novel-child-list">
+        <div class="novel-chapters">
             <?php
-            $novel_children = get_posts(array(
+            $chapters = get_post_meta(get_the_ID(), 'chapters', true);
+            $args = array(
                 'post_type' => 'novel_child',
                 'meta_query' => array(
                     array(
@@ -659,27 +665,36 @@ function append_novel_child_list($content) {
                 'orderby' => 'menu_order',
                 'order' => 'ASC',
                 'posts_per_page' => -1,
-            ));
+            );
+            $novel_children = new WP_Query($args);
 
-            if ($novel_children) {
+            if ($chapters && $novel_children->have_posts()) :
                 $current_chapter = '';
-                foreach ($novel_children as $child) {
-                    $chapter = get_post_meta($child->ID, 'chapter', true);
+                while ($novel_children->have_posts()) : $novel_children->the_post();
+                    $chapter = get_post_meta(get_the_ID(), 'chapter', true);
                     if ($chapter !== $current_chapter) {
                         if ($current_chapter !== '') {
-                            echo '</ul></li>';
+                            echo '</ul></div>';
                         }
-                        echo '<li><h3>' . $chapter . '</h3><ul class="novel-child-sublist">';
+                        echo '<div class="chapter">';
+                        echo '<div class="chapter-title">' . esc_html($chapter) . '</div>';
+                        echo '<ul class="episode-list">';
                         $current_chapter = $chapter;
                     }
-                    echo '<li><a href="' . get_permalink($child->ID) . '">' . $child->post_title . '</a></li>';
-                }
-                if ($current_chapter !== '') {
-                    echo '</ul></li>';
-                }
-            } else {
-                echo '<p>小説子がありません。</p>';
-            }
+                    ?>
+                    <li>
+                        <div class="episode-item">
+                            <a href="<?php the_permalink(); ?>" class="episode-link"><?php the_title(); ?></a>
+                            <span class="episode-date"><?php echo get_the_modified_date('Y年m月d日(D) H:i'); ?></span>
+                        </div>
+                    </li>
+                    <?php
+                endwhile;
+                echo '</ul></div>';
+                wp_reset_postdata();
+            else :
+                echo '<p>エピソードがありません。</p>';
+            endif;
             ?>
         </div>
         <?php
@@ -700,6 +715,8 @@ add_filter('logout_url', 'custom_logout_redirect', 10, 2);
 
 function search_novel_parents() {
     $query = sanitize_text_field($_POST['query']);
+    $sort = isset($_POST['sort']) ? sanitize_text_field($_POST['sort']) : 'newest';
+    
     $args = array(
         'post_type' => 'novel_parent',
         's' => $query,
@@ -707,21 +724,105 @@ function search_novel_parents() {
         'orderby' => 'menu_order', // 追加: 並び替えの基準をmenu_orderに設定
         'order' => 'ASC'           // 追加: 昇順で並べ替え
     );
-    if (empty($query)) {
-        unset($args['s']);  // 検索クエリが空の場合は、このパラメータを削除
+
+    switch ($sort) {
+        case 'oldest':
+            $args['orderby'] = 'date';
+            $args['order'] = 'ASC';
+            break;
+        case 'title':
+            $args['orderby'] = 'title';
+            $args['order'] = 'ASC';
+            break;
+        case 'popular':
+            $args['meta_key'] = 'novel_views'; // 閲覧数を記録するカスタムフィールドを想定
+            $args['orderby'] = 'meta_value_num';
+            $args['order'] = 'DESC';
+            break;
+        default: // newest
+            $args['orderby'] = 'date';
+            $args['order'] = 'DESC';
     }
-    $query = new WP_Query($args);
-    if ($query->have_posts()) {
-        while ($query->have_posts()) {
-            $query->the_post();
-            echo '<li><a href="' . get_permalink() . '">' . get_the_title() . '</a></p>';
-        }
-    } else {
-        echo '<li>該当する小説親が見つかりません。</li>';
-    }
-    wp_die(); // AJAXリクエストを終了
+
+    $novel_parents = new WP_Query($args);
+    ob_start();
+    if ($novel_parents->have_posts()) :
+        while ($novel_parents->have_posts()) : $novel_parents->the_post();
+            ?>
+            <li class="novel-item">
+                <h3 class="novel-item-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
+                <p class="novel-item-description"><?php echo wp_trim_words(get_the_excerpt(), 30); ?></p>
+                <div class="novel-item-info">
+                    <?php
+                    $args = array(
+                        'post_type' => 'novel_child',
+                        'meta_query' => array(
+                            array(
+                                'key' => 'parent_novel',
+                                'value' => get_the_ID(),
+                            ),
+                        ),
+                        'orderby' => 'date',
+                        'order' => 'DESC',
+                        'posts_per_page' => 1,
+                    );
+                    $latest_child = new WP_Query($args);
+                    if ($latest_child->have_posts()) :
+                        $latest_child->the_post();
+                        ?>
+                        <span>最新話: <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a> (<?php echo get_the_date('Y/n/j'); ?>)</span>
+                        <?php
+                        wp_reset_postdata();
+                    endif;
+                    ?>
+                </div>
+            </li>
+            <?php
+        endwhile;
+        wp_reset_postdata();
+    else :
+        echo '<li>該当する小説が見つかりません。</li>';
+    endif;
+    $output = ob_get_clean();
+    wp_send_json_success($output);
 }
 add_action('wp_ajax_search_novel_parents', 'search_novel_parents');
 add_action('wp_ajax_nopriv_search_novel_parents', 'search_novel_parents');
+
+function enqueue_novel_list_scripts() {
+    if (is_page_template('page-novel_parents.php')) {
+        wp_enqueue_script('novel-list-js', get_template_directory_uri() . '/js/novel-list.js', array('jquery'), '1.0', true);
+        wp_localize_script('novel-list-js', 'novelListAjax', array('ajaxurl' => admin_url('admin-ajax.php')));
+    }
+}
+add_action('wp_enqueue_scripts', 'enqueue_novel_list_scripts');
+
+// 日付フォーマットをカスタマイズする関数
+function custom_date_format($date) {
+    $weekdays = array('日', '月', '火', '水', '木', '金', '土');
+    $timestamp = strtotime($date);
+    $formatted_date = date('Y年m月d日', $timestamp) . '(' . $weekdays[date('w', $timestamp)] . ') ' . date('H:i', $timestamp);
+    return $formatted_date;
+}
+
+// get_the_modified_date()のフォーマットをカスタマイズ
+function custom_modified_date($the_date, $d = '', $post = null) {
+    if (empty($post)) {
+        $post = get_post();
+    }
+
+    if (!$post) {
+        return $the_date;
+    }
+
+    $modified_date = $post instanceof WP_Post ? $post->post_modified : get_post_field('post_modified', $post);
+
+    if (!$modified_date) {
+        return $the_date;
+    }
+
+    return custom_date_format($modified_date);
+}
+add_filter('get_the_modified_date', 'custom_modified_date', 10, 3);
 ?>
 

@@ -1,200 +1,355 @@
-/*
-Theme Name: MyNovel
-Theme URI: https://iikimi-sichimi.com/
-Author: 伊井君七味
-Author URI: https://iikimi-sichimi.com/
-Description: 個人サイトで小説を公開するために作成したテーマです。
-Version: 1.0
-License: GNU General Public License v2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Text Domain: mynovel
-*/
-
 /* 共通スタイル */
 body {
-    font-family: 'Hiragino Mincho ProN', 'Yu Mincho', serif;
+    font-family: 'Noto Serif JP', serif;
     line-height: 1.8;
     color: #333;
-    background-color: #fff;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 0;
 }
 
-.novel-wrapper {
-    max-width: 100%;
-    margin: 0 auto;
-    padding: 10px;
-}
-
-.novel-title {
-    font-size: 20px;
-    margin-bottom: 15px;
-}
-
-.novel-content {
-    font-size: 16px;
-}
-
-.novel-navigation {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 20px;
-}
-
-.nav-button {
-    padding: 10px;
-    background-color: #f0f0f0;
-    text-decoration: none;
-    color: #333;
+/* ヘッダー */
+.novel-header {
+    background-color: #2c3e50;
+    color: #ecf0f1;
+    padding: 1rem;
     text-align: center;
-    flex: 1;
-    margin: 0 5px;
+}
+
+.novel-header .site-title {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.novel-header .site-title a {
+    color: #ecf0f1;
+    text-decoration: none;
+}
+
+/* ナビゲーション */
+.novel-nav {
+    background-color: #34495e;
+    padding: 0.5rem;
+}
+
+.novel-nav .nav-menu {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.novel-nav .nav-menu li {
+    margin: 0 1rem;
+}
+
+.novel-nav .nav-menu a {
+    color: #ecf0f1;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+/* メインコンテンツ */
+.novel-wrapper {
+    max-width: 800px;
+    margin: 1rem auto;
+    background-color: #fff;
+    padding: 1rem;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
     border-radius: 5px;
 }
 
+.novel-title {
+    font-size: 2.2rem;
+    margin-bottom: 1.5rem;
+    color: #2c3e50;
+    text-align: center;
+}
+
+.novel-content {
+    font-size: 1.1rem;
+    line-height: 1.9;
+    margin-bottom: 1.5rem;
+}
+
+.novel-description {
+    font-size: 1rem;
+    line-height: 1.8;
+    margin-bottom: 2rem;
+}
+
+/* 章とエピソード */
+.novel-chapters {
+    margin-bottom: 2rem;
+}
+
+.chapter {
+    margin-bottom: 1.5rem;
+}
+
+.chapter-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 0.3rem;
+}
+
+.episode-list {
+    list-style-type: none;
+    padding-left: 1rem;
+    margin: 0.5rem 0 0 0;
+}
+
+.episode-list li {
+    margin-bottom: 0.3rem;
+}
+
+.episode-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.episode-link {
+    color: #333;
+    text-decoration: none;
+    transition: color 0.3s;
+    flex-grow: 1;
+    margin-right: 1rem;
+}
+
+.episode-link:hover {
+    text-decoration: underline;
+}
+
+.episode-date {
+    font-size: 0.8rem;
+    color: #7f8c8d;
+    white-space: nowrap;
+}
+
+/* ナビゲーションボタン */
+.novel-navigation {
+    display: flex;
+    justify-content: center;
+    padding: 0.5rem 0;
+}
+
+.novel-navigation.top {
+    border-bottom: 1px solid #e0e0e0;
+    margin-bottom: 1rem;
+}
+
+.novel-navigation.bottom {
+    border-top: 1px solid #e0e0e0;
+    margin-top: 1rem;
+}
+
+.nav-button {
+    padding: 0.5rem 1rem;
+    background-color: #bdc3c7;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 3px;
+    font-size: 0.9rem;
+    transition: background-color 0.3s;
+    margin: 0 0.5rem;
+}
+
+.nav-button:hover {
+    background-color: #95a5a6;
+}
+
 .nav-button.disabled {
-    opacity: 0.5;
+    background-color: #ecf0f1;
+    color: #bdc3c7;
     cursor: not-allowed;
 }
 
-/* PC・タブレット用スタイル */
-@media screen and (min-width: 768px) {
-    body {
-        background-color: #f0f0f0;
-    }
-
-    .novel-wrapper {
-        max-width: 800px;
-        background-color: #fff;
-        box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        padding: 40px;
-        margin-top: 40px;
-        margin-bottom: 40px;
-    }
-
-    .novel-title {
-        font-size: 32px;
-        text-align: center;
-        margin-bottom: 40px;
-    }
-
-    .novel-content {
-        font-size: 20px;
-        line-height: 2;
-    }
-
-    .novel-navigation {
-        justify-content: center;
-        margin-top: 40px;
-    }
-
-    .nav-button {
-        padding: 10px 20px;
-        flex: 0 1 auto;
-        margin: 0 10px;
-    }
-}
-
-/* 小説親ページのリストスタイル */
-.novel-child-list {
-    list-style-type: none;
-    padding: 0;
-    border: 1px solid #ccc; /* ボーダーを追加 */
-    box-shadow: 2px 2px 5px rgba(0,0,0,0.2); /* 影を追加 */
-}
-
-.novel-child-list > li:nth-child(odd) {
-    background-color: #fff; /* 奇数行の背景色 */
-}
-
-.novel-child-list > li:nth-child(even) {
-    background-color: #f0f0f0; /* 偶数行の背景色 */
-}
-
-.novel-child-list > li {
-    padding: 6px; /* 各リストアイテムに内側余白を3px追加 */
-}
-
-.novel-child-list h3 {
-    margin-bottom: 10px;
-    font-size: 22px;
-}
-
-.novel-child-sublist {
-    list-style-type: none;
-    padding-left: 20px;
-}
-
-.novel-child-sublist li {
-    margin-bottom: 5px;
-}
-
-@media screen and (max-width: 767px) {
-    .novel-child-list h3 {
-        font-size: 18px;
-    }
-
-    .novel-child-sublist {
-        padding-left: 15px;
-    }
-}
-
-.novel-child-nav ul {
-    list-style-type: none; /* リストアイテムの点を非表示にする */
-    padding-left: 0; /* 左側のパディングを削除してリストを左揃えにする */
-}
-
-.novel-header {
-    text-align: center; /* ヘッダー全体を中央寄せに */
-    background-color: #f8f8f8;
-    padding: 10px 20px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-.header-inner {
-    display: block; /* flexをblockに変更して中央寄せを容易に */
-}
-
-.site-title a {
-    color: #333;
-    text-decoration: none;
-    font-size: 24px;
-    margin: 0 auto; /* タイトルを中央寄せに */
-}
-
-.main-nav {
-    text-align: center; /* ナビゲーションメニューを中央寄せに */
-}
-
-.main-nav ul {
-    display: inline-block; /* ナビゲーションのリストをインラインブロックに */
-    padding: 0;
-}
-
-.main-nav li {
-    display: inline; /* リストアイテムをインライン表示に */
-    margin-right: 20px;
-}
-
+/* フッター */
 .novel-footer {
-    text-align: center; /* フッター全体を中央寄せに */
-    background-color: #f8f8f8;
-    padding: 10px 20px;
-    box-shadow: 0 -2px 5px rgba(0,0,0,0.1); /* ヘッダーと同様の影を下部に */
+    background-color: #2c3e50;
+    color: #ecf0f1;
+    text-align: center;
+    padding: 1rem;
+    font-size: 0.8rem;
 }
 
-.footer-inner {
-    display: block; /* 中央寄せを容易にするためにblockを使用 */
-    margin: 0 auto; /* 自動的に中央寄せ */
+/* 小説一覧ページのスタイル */
+.novel-list-title {
+    font-size: 1.4rem;
+    margin-bottom: 0.8rem;
+    text-align: center;
+    color: #2c3e50;
 }
 
-/* フッター内のテキストスタイル */
-.footer-inner p {
+.novel-search-sort {
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.novel-search {
+    display: flex;
+    margin-bottom: 0.5rem;
+    width: 100%;
+}
+
+.novel-search input {
+    flex-grow: 1;
+    padding: 0.5rem;
+    font-size: 0.9rem;
+    border: 1px solid #bdc3c7;
+    border-radius: 3px 0 0 3px;
+}
+
+.novel-search button {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 0 3px 3px 0;
+    cursor: pointer;
+    width: 60px;
+    white-space: nowrap;
+}
+
+.novel-search button:hover {
+    background-color: #2980b9;
+}
+
+.novel-sort {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+}
+
+.novel-sort select {
+    padding: 0.5rem;
+    font-size: 0.9rem;
+    border: 1px solid #bdc3c7;
+    border-radius: 3px;
+    background-color: white;
+    width: 100%;
+}
+
+.novel-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.novel-item {
+    border-bottom: 1px solid #ecf0f1;
+    padding-top: 0.8rem;
+    padding-bottom: 0.8rem;
+}
+
+.novel-item:last-child {
+    border-bottom: none;
+}
+
+.novel-item-title {
+    font-size: 1.1rem;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-bottom: 0.8rem;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.novel-item-title a {
+    color: #3498db;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.novel-item-title a:hover {
+    text-decoration: underline;
+}
+
+.novel-item-description {
+    font-size: 0.95rem;
     color: #333;
-    font-size: 16px; /* フォントサイズ調整 */
-    margin: 10px 0; /* 上下のマージン調整 */
+    margin: 0;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid #f0f0f0;
 }
 
-.novel-excerpt {
-    font-size: 16px; /* 文字サイズを小さくする */
-    margin-top: 5px; /* タイトルとの間隔を狭くする */
+.novel-item-info {
+    font-size: 0.95rem;
+    color: #2c3e50;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 0.8rem;
+    padding-bottom: 0;
+}
+
+.novel-item-info a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+.novel-item-info a:hover {
+    text-decoration: underline;
+}
+
+/* メディアクエリ */
+@media (max-width: 600px) {
+    .novel-wrapper {
+        padding: 0.8rem;
+        margin: 0.8rem;
+    }
+    .novel-title {
+        font-size: 1.8rem;
+    }
+    .novel-content {
+        font-size: 1rem;
+    }
+    .novel-nav .nav-menu {
+        flex-direction: column;
+        align-items: center;
+    }
+    .novel-nav .nav-menu li {
+        margin: 0.5rem 0;
+    }
+    .episode-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .episode-link {
+        margin-right: 0;
+        margin-bottom: 0.2rem;
+    }
+    .novel-search-sort {
+        width: 100%;
+        max-width: none;
+    }
+    .novel-search {
+        width: 100%;
+    }
+    .novel-search input {
+        width: calc(100% - 60px);
+    }
+    .novel-sort {
+        justify-content: flex-end;
+        width: 100%;
+    }
+    .novel-sort select {
+        width: 100%;
+    }
+    .novel-list-title {
+        font-size: 1.2rem;
+    }
+    .novel-item-title {
+        font-size: 1rem;
+    }
 }
