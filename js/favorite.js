@@ -1,9 +1,9 @@
 jQuery(document).ready(function($) {
-    $('#favorite-button').on('click', function(e) {
+    $(document).on('click', '#favorite-button', function(e) {
         e.preventDefault();
         var $button = $(this);
         var novelId = $button.data('novel-id');
-        var action = $button.hasClass('add-favorite') ? 'add_favorite_novel' : 'remove_favorite_novel';
+        var action = $button.hasClass('active') ? 'remove_favorite_novel' : 'add_favorite_novel';
 
         $.ajax({
             url: favoriteAjax.ajax_url,
@@ -15,10 +15,11 @@ jQuery(document).ready(function($) {
             },
             success: function(response) {
                 if (response.success) {
+                    $button.toggleClass('active');
                     if (action === 'add_favorite_novel') {
-                        $button.removeClass('add-favorite').addClass('remove-favorite').text('お気に入りから削除');
+                        $button.attr('aria-label', 'お気に入りから削除');
                     } else {
-                        $button.removeClass('remove-favorite').addClass('add-favorite').text('お気に入りに追加');
+                        $button.attr('aria-label', 'お気に入りに追加');
                     }
                 } else {
                     alert(response.data);

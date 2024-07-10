@@ -636,11 +636,9 @@ function append_novel_child_list($content) {
                         $current_chapter = $chapter;
                     }
                     ?>
-                    <li>
-                        <div class="episode-item">
-                            <a href="<?php the_permalink(); ?>" class="episode-link"><?php the_title(); ?></a>
-                            <span class="episode-date"><?php echo get_the_modified_date('Y年m月d日(D) H:i'); ?></span>
-                        </div>
+                    <li class="episode-item">
+                        <a href="<?php the_permalink(); ?>" class="episode-link"><?php the_title(); ?></a>
+                        <span class="episode-date"><?php echo get_the_modified_date('Y年m月d日(D) H:i'); ?></span>
                     </li>
                     <?php
                 endwhile;

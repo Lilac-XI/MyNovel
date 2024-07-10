@@ -35,6 +35,9 @@
     border-radius: 3px;
     cursor: pointer;
     transition: background-color 0.3s;
+    min-width: 60px; /* ボタンの最小幅を設定 */
+    white-space: nowrap; /* テキストの折り返しを防止 */
+    text-align: center; /* テキストを中央揃え */
 }
 
 .novel-search button:hover, .update-button:hover {
@@ -125,28 +128,114 @@
     text-decoration: underline;
 }
 
-/* お気に入りボタン */
+/* 小説親ページのレイアウト */
+.novel-parent {
+    position: relative;
+    padding-top: 40px; /* お気に入りボタンの高さ分の余白を追加 */
+}
+
+.novel-header-container {
+    position: relative;
+    margin-bottom: 2rem;
+}
+
+.novel-title {
+    margin-bottom: 0.5rem;
+}
+
+/* 新しいお気に入りボタンのスタイル */
 .favorite-button-container {
     position: absolute;
-    bottom: -30px;
-    right: 0;
+    top: 20px;
+    right: 20px;
 }
 
-#favorite-button, .login-to-favorite {
-    display: inline-block;
-    padding: 0.3rem 0.8rem;
-    font-size: 0.9rem;
-    color: #ffffff;
-    background-color: #5d4157;
+.favorite-button {
+    background: none;
     border: none;
-    border-radius: 3px;
     cursor: pointer;
-    transition: background-color 0.3s;
-    text-decoration: none;
+    outline: none;
+    padding: 0;
+    transition: transform 0.3s ease;
 }
 
-#favorite-button:hover, .login-to-favorite:hover {
-    background-color: #8e7a8e;
+.favorite-button:hover {
+    transform: scale(1.1);
+}
+
+.favorite-button svg {
+    width: 30px;
+    height: 30px;
+    fill: none;
+    stroke: #5d4157;
+    stroke-width: 2;
+    transition: all 0.3s ease;
+}
+
+.favorite-button:hover svg {
+    stroke: #8e7a8e;
+}
+
+.favorite-button.active svg {
+    fill: #5d4157;
+    stroke: none; /* active状態の時に枠を非表示にする */
+    animation: pulse 0.3s ease-in-out;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+/* 小説の説明（あらすじ） */
+.novel-description {
+    margin-top: 1rem;
+    padding: 1rem 0;
+    background-color: #ffffff;
+}
+
+/* エピソード一覧 */
+.novel-chapters {
+    margin-top: 2rem;
+}
+
+.chapter {
+    margin-bottom: 1.5rem;
+}
+
+.chapter-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #5d4157;
+    margin-bottom: 0.5rem;
+}
+
+.episode-list {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.episode-item {
+    margin-bottom: 0.5rem;
+}
+
+.episode-link {
+    display: block;
+    color: #5d4157;
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: 0.2rem;
+}
+
+.episode-link:hover {
+    color: #8e7a8e;
+}
+
+.episode-date {
+    display: block;
+    font-size: 0.9rem;
+    color: #666;
 }
 
 /* エピソードナビゲーション */

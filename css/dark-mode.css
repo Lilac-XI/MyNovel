@@ -1,80 +1,161 @@
-/* ダークモードスイッチ */
-.dark-mode-switch {
-    position: absolute;
-    right: 1rem;
-    top: 50%;
-    transform: translateY(-50%);
-}
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 60px;
-    height: 34px;
-}
-.switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-.slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    transition: .4s;
-    border-radius: 34px;
-}
-.slider:before {
-    position: absolute;
-    content: "☀️";
-    height: 26px;
-    width: 26px;
-    left: 4px;
-    bottom: 4px;
-    background-color: white;
-    transition: .4s;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-}
-input:checked + .slider {
-    background-color: #5d4157;
-}
-input:checked + .slider:before {
-    transform: translateX(26px);
-    content: "🌙";
-}
-
 /* ダークモードのスタイル */
 body.dark-mode {
     background-color: #1a1a1a;
     color: #e0e0e0;
 }
-body.dark-mode .novel-header {
+
+body.dark-mode .novel-header,
+body.dark-mode .novel-nav,
+body.dark-mode .novel-footer {
     background-color: #2a2a2a;
     color: #e0e0e0;
 }
-body.dark-mode .site-title a {
-    color: #b3a0a0;
+
+body.dark-mode .site-title a,
+body.dark-mode .novel-nav .nav-menu a {
+    color: #e0e0e0;
 }
+
+body.dark-mode .novel-nav .nav-menu a:hover {
+    color: #ffffff;
+}
+
 body.dark-mode .novel-wrapper {
     background-color: #2a2a2a;
     box-shadow: 0 0 10px rgba(255,255,255,0.1);
 }
-body.dark-mode .novel-list-title {
-    color: #b3a0a0;
+
+body.dark-mode .novel-title,
+body.dark-mode .mypage-title,
+body.dark-mode .novel-list-title,
+body.dark-mode .novel-item-title a,
+body.dark-mode .episode-link,
+body.dark-mode .chapter-title {
+    color: #e0e0e0;
 }
+
+body.dark-mode .novel-item-description,
+body.dark-mode .novel-description,
+body.dark-mode .novel-content {
+    color: #ffffff;
+}
+
+body.dark-mode .novel-description {
+    background-color: #2a2a2a;
+}
+
 body.dark-mode .novel-item {
     border-bottom-color: #444;
 }
-body.dark-mode .novel-item-title a {
-    color: #b3a0a0;
+
+body.dark-mode .novel-item-info,
+body.dark-mode .episode-date {
+    color: #b0b0b0;
 }
-body.dark-mode .novel-item-description {
-    color: #999;
+
+body.dark-mode .favorite-button svg {
+    stroke: #e0e0e0;
+}
+
+body.dark-mode .favorite-button.active svg {
+    fill: #e0e0e0;
+}
+
+body.dark-mode .favorite-button:hover svg {
+    stroke: #ffffff;
+}
+
+body.dark-mode .nav-cell {
+    border-color: #e0e0e0;
+}
+
+body.dark-mode .nav-link {
+    color: #e0e0e0;
+}
+
+body.dark-mode .nav-link:hover,
+body.dark-mode .nav-cell.toc .nav-link:hover {
+    background-color: #e0e0e0;
+    color: #1a1a1a;
+}
+
+body.dark-mode .nav-link.disabled {
+    color: #666666;
+}
+
+body.dark-mode .nav-link.disabled:hover {
+    background-color: transparent;
+    color: #666666;
+}
+
+body.dark-mode .novel-search input, 
+body.dark-mode .info-item input,
+body.dark-mode .novel-sort select {
+    background-color: #333;
+    color: #e0e0e0;
+    border-color: #555;
+}
+
+body.dark-mode .novel-search button, 
+body.dark-mode .update-button {
+    background-color: #5d4157;
+    color: #ffffff;
+    min-width: 60px;
+    white-space: nowrap;
+    text-align: center;
+}
+
+body.dark-mode .novel-search button:hover, 
+body.dark-mode .update-button:hover {
+    background-color: #8e7a8e;
+}
+
+body.dark-mode .message.success {
+    background-color: #264c2e;
+    color: #a3d9b1;
+    border-color: #2d5a37;
+}
+
+body.dark-mode .message.error {
+    background-color: #4c2626;
+    color: #d9a3a3;
+    border-color: #5a2d2d;
+}
+
+/* ダークモード時のリンク色の調整 */
+body.dark-mode a {
+    color: #b185db;
+    text-decoration: none;
+}
+
+body.dark-mode a:hover {
+    color: #cea5f2;
+}
+
+/* マイページ内の項目名やボーダーの色調整 */
+body.dark-mode .favorite-novels h2, 
+body.dark-mode .user-info h2 {
+    color: #e0e0e0;
+    border-bottom-color: #e0e0e0;
+}
+
+body.dark-mode .info-item label {
+    color: #e0e0e0;
+}
+
+body.dark-mode .favorite-novels, 
+body.dark-mode .user-info {
+    border-color: #e0e0e0;
+}
+
+/* エピソード内の目次の色調整 */
+body.dark-mode .nav-cell.toc .nav-link {
+    color: #e0e0e0;
+}
+
+/* リストのスタイル調整 */
+body.dark-mode ul, 
+body.dark-mode ol {
+    list-style-type: none;
+    padding-left: 0;
 }
