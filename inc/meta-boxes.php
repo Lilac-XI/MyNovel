@@ -263,3 +263,87 @@ function related_novel_children_meta_box_callback($post) {
         echo '<p>関連する小説子が見つかりません。</p>';
     }
 }
+
+// 小説子に関連するメタボックスを追加する関数
+function add_novel_children_meta_box() {
+    add_meta_box(
+        'novel_children_meta_box',
+        '関連する小説子',
+        'display_novel_children_meta_box',
+        'novel_parent',
+        'normal',
+        'high'
+    );
+}
+add_action( 'add_meta_boxes', 'add_novel_children_meta_box' );
+
+// 小説子に関連するメタボックスを表示する関数
+function display_novel_children_meta_box( $post ) {
+    $novel_type = get_post_meta( $post->ID, 'novel_type', true );
+    ?>
+    <div id="novel-children-section" style="display: <?php echo $novel_type === 'long' ? 'block' : 'none'; ?>;">
+        <a href="<?php echo admin_url( 'post-new.php?post_type=novel_child&parent_novel=' . $post->ID ); ?>" class="button button-primary">新規小説子を作成</a>
+        <?php
+        $args = array(
+            'post_type' => 'novel_child',
+            'meta_query' => array(
+                array(
+                    'key' => 'parent_novel',
+                    'value' => $post->ID,
+                    'compare' => '='
+                )
+            ),
+            'posts_per_page' => -1,
+            'orderby' => 'menu_order',
+            'order' => 'ASC'
+        );
+        $novel_children = new WP_Query( $args );
+
+        if ( $novel_children->have_posts() ) {
+            echo '<ul id="novel-children-list">';
+            while ( $novel_children->have_posts() ) {
+                $novel_children->the_post();
+                echo '<li id="post-' . get_the_ID() . '" class="menu-item"><a href="' . get_edit_post_link() . '">' . get_the_title() . '</a></li>';
+            }
+            echo '</ul>';
+            wp_reset_postdata();
+        } else {
+            echo '<p>関連する小説子が見つかりません。</p>';
+        }
+        ?>
+    </div>
+    <script>
+    jQuery(document).ready(function($) {
+        $('#novel-children-list').sortable({
+            update: function(event, ui) {
+                var order = $(this).sortable('toArray').toString();
+                $.post(ajaxurl, {
+                    action: 'save_novel_children_order',
+                    order: order,
+                    security: '<?php echo wp_create_nonce("save_novel_children_order_nonce"); ?>'
+                }, function(response) {
+                    if (response.success) {
+                    } else {
+                        console.log('順番の保存に失敗しました');
+                    }
+                });
+            }
+        });
+
+        function toggleNovelChildrenSection() {
+            var novelType = $('#novel_type').val();
+            if (novelType === 'long') {
+                $('#novel-children-section').show();
+            } else {
+                $('#novel-children-section').hide();
+                }
+            }
+
+            $('#novel_type').change(toggleNovelChildrenSection);
+        
+        // 初期表示時にも実行
+        toggleNovelChildrenSection();
+        });
+    </script>
+    <?php
+}

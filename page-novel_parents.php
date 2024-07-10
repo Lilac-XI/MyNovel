@@ -38,7 +38,6 @@ get_header(); ?>
                 <li class="novel-item">
                     <div class="novel-item-header">
                         <h3 class="novel-item-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
-                        <?php echo do_shortcode('[favorite_button novel_id="' . get_the_ID() . '"]'); ?>
                     </div>
                     <p class="novel-item-description"><?php echo wp_trim_words(get_the_excerpt(), 100, "..."); ?></p>
                     <div class="novel-item-info">
