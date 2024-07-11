@@ -2,7 +2,7 @@
 body.dark-mode {
     --bg-color: #2a2a2a;
     --text-color: #e0e0e0;
-    --link-color: #b185db;
+    --link-color: #a47cca;
     --link-hover-color: #cea5f2;
     --border-color: #444;
     --input-bg-color: #333;
@@ -35,8 +35,6 @@ body.dark-mode .novel-nav .nav-menu a,
 body.dark-mode .novel-title,
 body.dark-mode .mypage-title,
 body.dark-mode .novel-list-title,
-body.dark-mode .novel-item-title a,
-body.dark-mode .episode-link,
 body.dark-mode .chapter-title,
 body.dark-mode .nav-link,
 body.dark-mode .favorite-novels h2, 
