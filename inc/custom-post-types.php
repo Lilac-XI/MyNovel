@@ -5,8 +5,8 @@ function create_novel_post_types() {
     register_post_type( 'novel_parent',
         array(
             'labels' => array(
-                'name' => __( 'Novel Parents' ),
-                'singular_name' => __( 'Novel Parent' )
+                'name' => __( '小説' ),
+                'singular_name' => __( '小説' )
             ),
             'public' => true,
             'has_archive' => true,
@@ -19,8 +19,8 @@ function create_novel_post_types() {
     register_post_type( 'novel_child',
         array(
             'labels' => array(
-                'name' => __( 'Novel Children' ),
-                'singular_name' => __( 'Novel Child' )
+                'name' => __( 'エピソード' ),
+                'singular_name' => __( 'エピソード' )
             ),
             'public' => true,
             'has_archive' => true,

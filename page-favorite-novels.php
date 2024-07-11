@@ -52,7 +52,6 @@ if (is_user_logged_in()) :
                             <span>最新話: <?php echo get_latest_episode(get_the_ID()); ?></span>
                             <span>お気に入り登録日: <?php echo $fav_date ? date('Y/m/d', strtotime($fav_date)) : '不明'; ?></span>
                         </div>
-                        <?php echo do_shortcode('[favorite_button novel_id="' . get_the_ID() . '"]'); ?>
                     </li>
         <?php
                 endwhile;

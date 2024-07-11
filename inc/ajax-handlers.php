@@ -95,6 +95,7 @@ add_action('wp_ajax_remove_favorite_novel', 'remove_favorite_novel');
 function search_novel_parents() {
     $query = sanitize_text_field($_POST['query']);
     $sort = isset($_POST['sort']) ? sanitize_text_field($_POST['sort']) : 'newest';
+    $limited_episodes = isset($_POST['limited_episodes']) ? filter_var($_POST['limited_episodes'], FILTER_VALIDATE_BOOLEAN) : false;
     
     $args = array(
         'post_type' => 'novel_parent',
@@ -103,6 +104,22 @@ function search_novel_parents() {
         'orderby' => 'menu_order',
         'order' => 'ASC'
     );
+
+    if ($limited_episodes) {
+        $args['meta_query'] = array(
+            'relation' => 'OR',
+            array(
+                'key' => 'has_locked_parent',
+                'value' => 'true',
+                'compare' => '='
+            ),
+            array(
+                'key' => 'has_locked_child',
+                'value' => 'true',
+                'compare' => '='
+            )
+        );
+    }
 
     switch ($sort) {
         case 'oldest':
@@ -130,6 +147,17 @@ function search_novel_parents() {
             ?>
             <li class="novel-item">
                 <h3 class="novel-item-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
+                <?php
+                // タグを取得して表示
+                $tags = get_post_meta(get_the_ID(), 'novel_tags', true);
+                        if (!empty($tags)) {
+                            echo '<ul class="novel-item-tags">';
+                            foreach ($tags as $tag) {
+                                echo '<li data-category="">' . esc_html($tag) . '</li>';
+                            }
+                            echo '</ul>';
+                        }
+                ?>
                 <p class="novel-item-description"><?php echo wp_trim_words(get_the_excerpt(), 100, "..."); ?></p>
                 <div class="novel-item-info">
                     <?php

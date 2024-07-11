@@ -2,11 +2,13 @@ jQuery(document).ready(function($) {
     var $searchInput = $('#novel-search-input');
     var $searchButton = $('#novel-search-button');
     var $sortSelect = $('#novel-sort-select');
+    var $limitedEpisodesFilter = $('#limited-episodes-filter');
     var $novelList = $('#novel-list');
 
     function performSearch() {
         var query = $searchInput.val();
         var sort = $sortSelect.val();
+        var limitedEpisodes = $limitedEpisodesFilter.is(':checked');
 
         $.ajax({
             url: novelListAjax.ajaxurl,
@@ -14,7 +16,8 @@ jQuery(document).ready(function($) {
             data: {
                 action: 'search_novel_parents',
                 query: query,
-                sort: sort
+                sort: sort,
+                limited_episodes: limitedEpisodes
             },
             success: function(response) {
                 if (response.success) {
@@ -30,8 +33,7 @@ jQuery(document).ready(function($) {
     }
 
     $searchButton.on('click', performSearch);
-    $sortSelect.on('change', performSearch);
-
+    
     $searchInput.on('keypress', function(e) {
         if (e.which == 13) {
             performSearch();

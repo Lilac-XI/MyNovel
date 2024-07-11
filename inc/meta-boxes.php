@@ -110,8 +110,44 @@ function display_chapters_meta_box( $post ) {
     <button type="button" id="add-chapter" class="button button-primary">章を追加</button>
     <script>
     jQuery(document).ready(function($) {
-        // 章の追加、編集、削除、並び替えの JavaScript コード
-        // （省略）
+        var wrapper = $('#chapters-wrapper');
+
+        $('#add-chapter').on('click', function() {
+            var newIndex = wrapper.children().length;
+            var newChapter = $('<div class="chapter-item" data-index="' + newIndex + '">' +
+                '<span class="chapter-text"></span>' +
+                '<input type="text" name="chapters[]" value="" />' +
+                '<button type="button" class="edit-chapter">編集</button>' +
+                '<button type="button" class="remove-chapter">削除</button>' +
+                '</div>');
+            wrapper.append(newChapter);
+            newChapter.find('input').show().focus();
+            newChapter.find('.chapter-text').hide();
+        });
+
+        wrapper.on('click', '.edit-chapter', function() {
+            var item = $(this).closest('.chapter-item');
+            item.find('.chapter-text').hide();
+            item.find('input').show().focus();
+        });
+
+        wrapper.on('click', '.remove-chapter', function() {
+            $(this).closest('.chapter-item').remove();
+        });
+
+        wrapper.on('blur', 'input', function() {
+            var item = $(this).closest('.chapter-item');
+            var text = $(this).val();
+            item.find('.chapter-text').text(text).show();
+            $(this).hide();
+        });
+
+        wrapper.sortable({
+            items: '.chapter-item',
+            cursor: 'move',
+            axis: 'y',
+            handle: '.chapter-text'
+        });
     });
     </script>
     <?php
@@ -347,3 +383,166 @@ function display_novel_children_meta_box( $post ) {
     </script>
     <?php
 }
+
+// 小説ロックのメタボックスを追加
+function add_novel_lock_meta_box() {
+    add_meta_box(
+        'novel_lock_meta_box',
+        '小説ロック設定',
+        'display_novel_lock_meta_box',
+        'novel_parent',
+        'side',
+        'default'
+    );
+}
+add_action('add_meta_boxes', 'add_novel_lock_meta_box');
+
+// 小説ロックのメタボックスを表示
+function display_novel_lock_meta_box($post) {
+    $has_locked_parent = get_post_meta($post->ID, 'has_locked_parent', true);
+    $has_locked_child = get_post_meta($post->ID, 'has_locked_child', true);
+
+    wp_nonce_field('novel_lock_meta_box', 'novel_lock_meta_box_nonce');
+
+    ?>
+    <p>
+        <label for="has_locked_parent">
+            <input type="checkbox" name="has_locked_parent" id="has_locked_parent" value="true" <?php checked($has_locked_parent, 'true'); ?> />
+            小説ロック
+        </label>
+    </p>
+    <p>
+        <label for="has_locked_child">
+            <input type="checkbox" name="has_locked_child" id="has_locked_child" value="true" <?php checked($has_locked_child, 'true'); ?> />
+            エピソードロック
+        </label>
+    </p>
+    <?php
+}
+
+// 小説ロックのメタデータを保存
+function save_novel_lock_meta_box($post_id) {
+    if (!isset($_POST['novel_lock_meta_box_nonce']) || !wp_verify_nonce($_POST['novel_lock_meta_box_nonce'], 'novel_lock_meta_box')) {
+        return;
+    }
+
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+        return;
+    }
+
+    if (!current_user_can('edit_post', $post_id)) {
+        return;
+    }
+
+    $has_locked_parent = isset($_POST['has_locked_parent']) ? 'true' : 'false';
+    $has_locked_child = isset($_POST['has_locked_child']) ? 'true' : 'false';
+
+    update_post_meta($post_id, 'has_locked_parent', $has_locked_parent);
+    update_post_meta($post_id, 'has_locked_child', $has_locked_child);
+}
+add_action('save_post', 'save_novel_lock_meta_box');
+
+// 同期チェックボックスをメタボックスに追加（小説親の編集画面のみ）
+function add_sync_checkbox_to_novel_parent($post) {
+    // 現在の投稿タイプが 'novel_parent' の場合のみチェックボックスを表示
+    if (get_post_type($post) === 'novel_parent') {
+        ?>
+        <div class="misc-pub-section">
+            <label>
+                <input type="checkbox" name="sync_patreon_to_children" id="sync_patreon_to_children" value="1">
+                子エピソードにPatreonレベルを同期する
+            </label>
+        </div>
+        <?php
+    }
+}
+add_action('post_submitbox_misc_actions', 'add_sync_checkbox_to_novel_parent');
+
+// タグに関するメタボックスを追加する関数
+function add_tags_meta_box() {
+    add_meta_box(
+        'tags_meta_box',
+        'タグ',
+        'display_tags_meta_box',
+        'novel_parent',
+        'normal',
+        'high'
+    );
+}
+add_action( 'add_meta_boxes', 'add_tags_meta_box' );
+
+// タグのメタボックスを表示する関数
+function display_tags_meta_box( $post ) {
+    $tags = get_post_meta( $post->ID, 'novel_tags', true );
+    wp_nonce_field( 'tags_meta_box', 'tags_meta_box_nonce' );
+    ?>
+    <div id="tags-wrapper">
+        <?php if ( ! empty( $tags ) ) : ?>
+            <?php foreach ( $tags as $index => $tag ) : ?>
+                <div class="tag-item" data-index="<?php echo $index; ?>">
+                    <span class="tag-text"><?php echo esc_html( $tag ); ?></span>
+                    <input type="text" name="novel_tags[]" value="<?php echo esc_attr( $tag ); ?>" style="display: none;" />
+                    <button type="button" class="edit-tag">編集</button>
+                    <button type="button" class="remove-tag">削除</button>
+                </div>
+            <?php endforeach; ?>
+        <?php endif; ?>
+    </div>
+    <button type="button" id="add-tag" class="button button-primary">タグを追加</button>
+    <script>
+    jQuery(document).ready(function($) {
+        var wrapper = $('#tags-wrapper');
+
+        $('#add-tag').on('click', function() {
+            var newIndex = wrapper.children().length;
+            var newTag = $('<div class="tag-item" data-index="' + newIndex + '">' +
+                '<span class="tag-text"></span>' +
+                '<input type="text" name="novel_tags[]" value="" />' +
+                '<button type="button" class="edit-tag">編集</button>' +
+                '<button type="button" class="remove-tag">削除</button>' +
+                '</div>');
+            wrapper.append(newTag);
+            newTag.find('input').show().focus();
+            newTag.find('.tag-text').hide();
+        });
+
+        wrapper.on('click', '.edit-tag', function() {
+            var item = $(this).closest('.tag-item');
+            item.find('.tag-text').hide();
+            item.find('input').show().focus();
+        });
+
+        wrapper.on('click', '.remove-tag', function() {
+            $(this).closest('.tag-item').remove();
+        });
+
+        wrapper.on('blur', 'input', function() {
+            var item = $(this).closest('.tag-item');
+            var text = $(this).val();
+            item.find('.tag-text').text(text).show();
+            $(this).hide();
+        });
+
+        wrapper.sortable({
+            items: '.tag-item',
+            cursor: 'move',
+            axis: 'y',
+            handle: '.tag-text'
+        });
+    });
+    </script>
+    <?php
+}
+
+// タグのメタデータを保存する関数
+function save_tags_meta_box( $post_id ) {
+    if ( ! isset( $_POST['tags_meta_box_nonce'] ) || ! wp_verify_nonce( $_POST['tags_meta_box_nonce'], 'tags_meta_box' ) ) {
+        return;
+    }
+    if ( isset( $_POST['novel_tags'] ) ) {
+        $tags = array_map( 'sanitize_text_field', $_POST['novel_tags'] );
+        $tags = array_filter( $tags ); // 空のタグを削除
+        update_post_meta( $post_id, 'novel_tags', $tags );
+    }
+}
+add_action( 'save_post', 'save_tags_meta_box' );

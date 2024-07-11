@@ -148,3 +148,18 @@ function custom_logout_redirect($logout_url, $redirect) {
     return $logout_url;
 }
 add_filter('logout_url', 'custom_logout_redirect', 10, 2);
+
+function determine_tag_category($tag) {
+    // この関数は例です。実際のタグカテゴリーの決定ロジックに合わせて実装してください。
+    $romance_tags = ['恋愛', 'ラブコメ', 'ロマンス'];
+    $fantasy_tags = ['ファンタジー', '異世界', '魔法'];
+    $mystery_tags = ['ミステリー', '推理', 'サスペンス'];
+    $scifi_tags = ['SF', '近未来', '宇宙'];
+
+    if (in_array($tag, $romance_tags)) return 'romance';
+    if (in_array($tag, $fantasy_tags)) return 'fantasy';
+    if (in_array($tag, $mystery_tags)) return 'mystery';
+    if (in_array($tag, $scifi_tags)) return 'scifi';
+
+    return 'default'; // デフォルトカテゴリー
+}
