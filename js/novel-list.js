@@ -14,7 +14,7 @@ jQuery(document).ready(function($) {
 
         if (searchType === 'tag') {
             $('.tag-cloud .novel-tag.active').each(function() {
-                selectedTags.push($(this).text().replace('#', '').trim());
+                selectedTags.push($(this).data('tag-id'));
             });
         }
 
@@ -61,6 +61,10 @@ jQuery(document).ready(function($) {
         performSearch($('.search-tab.active').data('tab') === 'text-search' ? 'text' : 'tag');
     });
 
+    $limitedEpisodesFilter.on('change', function() {
+        performSearch($('.search-tab.active').data('tab') === 'text-search' ? 'text' : 'tag');
+    });
+
     // タブ切り替え
     $('.search-tab').on('click', function() {
         $('.search-tab').removeClass('active');
@@ -69,14 +73,20 @@ jQuery(document).ready(function($) {
         $('#' + $(this).data('tab')).addClass('active');
     });
 
-    // タグの選択状態を切り替える
-    $('.tag-cloud .novel-tag').on('click', function() {
-        $(this).toggleClass('active');
+    // タググループのアコーディオン機能
+    $(document).on('click', '.tag-group-name', function() {
+        var $tagGroup = $(this).parent('.tag-group');
+        var $tagCloud = $tagGroup.find('.tag-cloud');
         
-        // クリックアニメーションを追加
-        $(this).addClass('clicked');
-        setTimeout(() => {
-            $(this).removeClass('clicked');
-        }, 300);
+        $tagCloud.slideToggle(300);
+        $tagGroup.toggleClass('active');
+        
+        var $icon = $(this).find('.toggle-icon');
+        $icon.text($tagGroup.hasClass('active') ? '−' : '+');
+    });
+
+    // タグ選択時の処理
+    $(document).on('click', '.novel-tag', function() {
+        $(this).toggleClass('active');
     });
 });

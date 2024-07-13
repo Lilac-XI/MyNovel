@@ -1,6 +1,6 @@
 <?php
 /*
-Template Name: Patreon Logout Page
+Template Name: パトロン用ログアウト画面
 */
 
 get_header(); // ヘッダーを取得

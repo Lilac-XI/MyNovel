@@ -93,45 +93,40 @@ function remove_favorite_novel() {
 add_action('wp_ajax_remove_favorite_novel', 'remove_favorite_novel');
 
 function search_novel_parents() {
-    $query = isset($_POST['query']) ? sanitize_text_field($_POST['query']) : '';
+    $query = sanitize_text_field($_POST['query']);
     $sort = isset($_POST['sort']) ? sanitize_text_field($_POST['sort']) : 'newest';
     $limited_episodes = isset($_POST['limited_episodes']) ? filter_var($_POST['limited_episodes'], FILTER_VALIDATE_BOOLEAN) : false;
-    $tags = isset($_POST['tags']) ? array_map('sanitize_text_field', $_POST['tags']) : array();
-    $search_type = isset($_POST['search_type']) ? sanitize_text_field($_POST['search_type']) : 'text';
+    $tags = isset($_POST['tags']) ? array_map('intval', $_POST['tags']) : array();
+    $search_type = sanitize_text_field($_POST['search_type']);
     
     $args = array(
         'post_type' => 'novel_parent',
         'posts_per_page' => -1,
     );
 
-    if (!empty($query)) {
+    if ($search_type === 'text' && !empty($query)) {
         $args['s'] = $query;
     }
 
-    $meta_query = array();
-
     if (!empty($tags)) {
-        $tag_query = array('relation' => 'AND');
-        foreach ($tags as $tag) {
-            $tag_query[] = array(
-                'key' => 'novel_tags',
-                'value' => $tag,
-                'compare' => 'LIKE',
-            );
-        }
-        $meta_query[] = $tag_query;
-    }
-
-    if ($limited_episodes) {
-        $meta_query[] = array(
-            'key' => 'has_locked_parent',
-            'value' => 'true',
-            'compare' => '=',
+        $args['tax_query'] = array(
+            array(
+                'taxonomy' => 'novel_tag',
+                'field' => 'term_id',
+                'terms' => $tags,
+                'operator' => 'AND'
+            )
         );
     }
 
-    if (!empty($meta_query)) {
-        $args['meta_query'] = $meta_query;
+    if ($limited_episodes) {
+        $args['meta_query'] = array(
+            array(
+                'key' => 'has_locked_parent',
+                'value' => 'true',
+                'compare' => '=',
+            )
+        );
     }
 
     switch ($sort) {
@@ -161,11 +156,11 @@ function search_novel_parents() {
             <li class="novel-item">
                 <h3 class="novel-item-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
                 <?php
-                $tags = get_post_meta(get_the_ID(), 'novel_tags', true);
-                if (!empty($tags)) {
+                $tags = get_the_terms(get_the_ID(), 'novel_tag');
+                if ($tags && !is_wp_error($tags)) {
                     echo '<ul class="novel-item-tags">';
                     foreach ($tags as $tag) {
-                        echo '<li>' . esc_html($tag) . '</li>';
+                        echo '<li data-tag-id="' . $tag->term_id . '">' . esc_html($tag->name) . '</li>';
                     }
                     echo '</ul>';
                 }

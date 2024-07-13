@@ -1,6 +1,6 @@
 <?php
 /*
-Template Name: Novel Parents Page
+Template Name: 小説一覧
 */
 get_header(); ?>
 
@@ -20,24 +20,67 @@ get_header(); ?>
                 </div>
             </div>
             <div class="search-panel" id="tag-search">
-                <div class="tag-cloud">
+                <div class="tag-groups">
                     <?php
-                    // 小説親のメタ情報からタグを取得
-                    $args = array(
-                        'post_type' => 'novel_parent',
-                        'posts_per_page' => -1,
-                    );
-                    $novel_parents = get_posts($args);
-                    $all_tags = array();
-                    foreach ($novel_parents as $novel) {
-                        $tags = get_post_meta($novel->ID, 'novel_tags', true);
-                        if (is_array($tags)) {
-                            $all_tags = array_merge($all_tags, $tags);
+                    // タググループを取得
+                    $tag_groups = get_terms(array(
+                        'taxonomy' => 'tag_group',
+                        'hide_empty' => false,
+                    ));
+
+                    foreach ($tag_groups as $group) {
+                        // グループに属するタグを取得
+                        $tags = get_terms(array(
+                            'taxonomy' => 'novel_tag',
+                            'hide_empty' => false,
+                            'meta_query' => array(
+                                array(
+                                'key' => 'tag_group',
+                                'value' => $group->term_id,
+                                'compare' => '='
+                                )
+                            )
+                        ));
+
+                        if (!empty($tags)) {
+                            echo '<div class="tag-group">';
+                            echo '<h3 class="tag-group-name">' . esc_html($group->name) . ' <span class="toggle-icon">+</span></h3>';
+                            echo '<div class="tag-cloud" style="display: none;">';
+                            foreach ($tags as $tag) {
+                                echo '<span class="novel-tag" data-tag-id="' . esc_attr($tag->term_id) . '">' . esc_html($tag->name) . '</span>';
+                            }
+                            echo '</div>';
+                            echo '</div>';
                         }
                     }
-                    $unique_tags = array_unique($all_tags);
-                    foreach ($unique_tags as $tag) {
-                        echo '<span class="novel-tag">' . esc_html($tag) . '</span>';
+
+                    // グループに属していないタグを取得
+                    $ungrouped_tags = get_terms(array(
+                        'taxonomy' => 'novel_tag',
+                        'hide_empty' => false,
+                        'meta_query' => array(
+                            'relation' => 'OR',
+                            array(
+                                'key' => 'tag_group',
+                                'compare' => 'NOT EXISTS'
+                            ),
+                            array(
+                                'key' => 'tag_group',
+                                'value' => '',
+                                'compare' => '='
+                            )
+                        )
+                    ));
+
+                    if (!empty($ungrouped_tags)) {
+                        echo '<div class="tag-group">';
+                        echo '<h3 class="tag-group-name">未分類 <span class="toggle-icon">+</span></h3>';
+                        echo '<div class="tag-cloud" style="display: none;">';
+                        foreach ($ungrouped_tags as $tag) {
+                            echo '<span class="novel-tag" data-tag-id="' . esc_attr($tag->term_id) . '">' . esc_html($tag->name) . '</span>';
+                        }
+                        echo '</div>';
+                        echo '</div>';
                     }
                     ?>
                 </div>
@@ -78,12 +121,11 @@ get_header(); ?>
                 <li class="novel-item">
                     <h3 class="novel-item-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
                     <?php
-                        // タグを取得して表示
-                        $tags = get_post_meta(get_the_ID(), 'novel_tags', true);
-                        if (!empty($tags)) {
+                        $tags = get_the_terms(get_the_ID(), 'novel_tag');
+                        if ($tags && !is_wp_error($tags)) {
                             echo '<ul class="novel-item-tags">';
                             foreach ($tags as $tag) {
-                                echo '<li data-category="">' . esc_html($tag) . '</li>';
+                                echo '<li data-tag-id="' . $tag->term_id . '">' . esc_html($tag->name) . '</li>';
                             }
                             echo '</ul>';
                         }

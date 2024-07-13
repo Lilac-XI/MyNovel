@@ -1,5 +1,6 @@
 /* CSS変数の定義 */
 body.dark-mode {
+    background-color: #1a1a1a;
     --bg-color: #2a2a2a;
     --text-color: #e0e0e0;
     --link-color: #a47cca;
@@ -12,9 +13,9 @@ body.dark-mode {
     --tag-bg-color: #5d4157;
     --tag-hover-bg-color: #6d4f67;
     --tag-hover-shadow: 0 2px 4px rgba(224, 224, 224, 0.2);
-    --tag-active-bg-color: #8e7a8e;
-    --tag-active-color: #ffffff;
-    background-color: #1a1a1a;
+    --tag-active-bg-color: #9932cc;
+    --tag-active-text-color: #ffffff;
+    --tag-active-shadow-color: rgba(153, 50, 204, 0.4);
 }
 
 /* 全体的なレイアウト要素のスタイル */
