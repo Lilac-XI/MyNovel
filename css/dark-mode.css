@@ -12,6 +12,8 @@ body.dark-mode {
     --tag-bg-color: #5d4157;
     --tag-hover-bg-color: #6d4f67;
     --tag-hover-shadow: 0 2px 4px rgba(224, 224, 224, 0.2);
+    --tag-active-bg-color: #8e7a8e;
+    --tag-active-color: #ffffff;
     background-color: #1a1a1a;
 }
 
@@ -143,17 +145,29 @@ body.dark-mode .novel-filter input[type="checkbox"]:hover {
 }
 
 /* タグのスタイル */
-body.dark-mode .novel-item-tags li {
+body.dark-mode .novel-item-tags li,
+body.dark-mode .tag-cloud .novel-tag {
     background-color: var(--tag-bg-color);
     color: var(--text-color);
+    transition: all 0.3s ease;
 }
 
-body.dark-mode .novel-item-tags li:hover {
+body.dark-mode .novel-item-tags li:hover,
+body.dark-mode .tag-cloud .novel-tag:hover {
     background-color: var(--tag-hover-bg-color);
+    transform: translateY(-2px);
     box-shadow: var(--tag-hover-shadow);
 }
 
-body.dark-mode .novel-item-tags li:before {
+body.dark-mode .tag-cloud .novel-tag.active {
+    background-color: var(--tag-active-bg-color);
+    color: var(--tag-active-color);
+    transform: translateY(-2px);
+    box-shadow: var(--tag-hover-shadow);
+}
+
+body.dark-mode .novel-item-tags li:before,
+body.dark-mode .tag-cloud .novel-tag:before {
     opacity: 0.9;
 }
 
@@ -221,4 +235,19 @@ body.dark-mode input:checked + .slider {
 input:checked + .slider:before {
     transform: translateX(26px);
     content: "🌙";
+}
+
+/* 検索タブのスタイル */
+body.dark-mode .search-tabs {
+    border-bottom: 2px solid var(--tag-bg-color);
+}
+
+body.dark-mode .search-tab {
+    background-color: var(--tag-bg-color);
+    color: var(--text-color);
+}
+
+body.dark-mode .search-tab.active {
+    background-color: var(--tag-hover-bg-color);
+    color: var(--text-color);
 }

@@ -93,32 +93,45 @@ function remove_favorite_novel() {
 add_action('wp_ajax_remove_favorite_novel', 'remove_favorite_novel');
 
 function search_novel_parents() {
-    $query = sanitize_text_field($_POST['query']);
+    $query = isset($_POST['query']) ? sanitize_text_field($_POST['query']) : '';
     $sort = isset($_POST['sort']) ? sanitize_text_field($_POST['sort']) : 'newest';
     $limited_episodes = isset($_POST['limited_episodes']) ? filter_var($_POST['limited_episodes'], FILTER_VALIDATE_BOOLEAN) : false;
+    $tags = isset($_POST['tags']) ? array_map('sanitize_text_field', $_POST['tags']) : array();
+    $search_type = isset($_POST['search_type']) ? sanitize_text_field($_POST['search_type']) : 'text';
     
     $args = array(
         'post_type' => 'novel_parent',
-        's' => $query,
         'posts_per_page' => -1,
-        'orderby' => 'menu_order',
-        'order' => 'ASC'
     );
 
+    if (!empty($query)) {
+        $args['s'] = $query;
+    }
+
+    $meta_query = array();
+
+    if (!empty($tags)) {
+        $tag_query = array('relation' => 'AND');
+        foreach ($tags as $tag) {
+            $tag_query[] = array(
+                'key' => 'novel_tags',
+                'value' => $tag,
+                'compare' => 'LIKE',
+            );
+        }
+        $meta_query[] = $tag_query;
+    }
+
     if ($limited_episodes) {
-        $args['meta_query'] = array(
-            'relation' => 'OR',
-            array(
-                'key' => 'has_locked_parent',
-                'value' => 'true',
-                'compare' => '='
-            ),
-            array(
-                'key' => 'has_locked_child',
-                'value' => 'true',
-                'compare' => '='
-            )
+        $meta_query[] = array(
+            'key' => 'has_locked_parent',
+            'value' => 'true',
+            'compare' => '=',
         );
+    }
+
+    if (!empty($meta_query)) {
+        $args['meta_query'] = $meta_query;
     }
 
     switch ($sort) {
@@ -148,15 +161,14 @@ function search_novel_parents() {
             <li class="novel-item">
                 <h3 class="novel-item-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
                 <?php
-                // タグを取得して表示
                 $tags = get_post_meta(get_the_ID(), 'novel_tags', true);
-                        if (!empty($tags)) {
-                            echo '<ul class="novel-item-tags">';
-                            foreach ($tags as $tag) {
-                                echo '<li data-category="">' . esc_html($tag) . '</li>';
-                            }
-                            echo '</ul>';
-                        }
+                if (!empty($tags)) {
+                    echo '<ul class="novel-item-tags">';
+                    foreach ($tags as $tag) {
+                        echo '<li>' . esc_html($tag) . '</li>';
+                    }
+                    echo '</ul>';
+                }
                 ?>
                 <p class="novel-item-description"><?php echo wp_trim_words(get_the_excerpt(), 100, "..."); ?></p>
                 <div class="novel-item-info">

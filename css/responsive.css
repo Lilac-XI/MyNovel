@@ -46,4 +46,12 @@
         font-size: 0.8rem;
         min-width: 50px;
     }
+
+    .novel-search {
+        flex-direction: column;
+    }
+    .novel-search input, .novel-search button, .novel-sort select, .search-button {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
 }

@@ -47,3 +47,10 @@ function enqueue_favorite_script() {
     ));
 }
 add_action('wp_enqueue_scripts', 'enqueue_favorite_script');
+
+function enqueue_nav_reset_script() {
+    if (is_singular('novel_child')) {
+        wp_enqueue_script('nav-reset', get_template_directory_uri() . '/js/nav-reset.js', array(), '1.0', true);
+    }
+}
+add_action('wp_enqueue_scripts', 'enqueue_nav_reset_script');

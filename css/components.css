@@ -19,6 +19,8 @@
     --tag-hover-shadow: 0 2px 4px rgba(93, 65, 87, 0.2);
     --link-color: #722561;
     --link-hover-color: #863173;
+    --tag-active-bg-color: #5d4157;
+    --tag-active-color: #ffffff;
 }
 
 body a {
@@ -231,211 +233,98 @@ body a {
     text-decoration: underline;
 }
 
-/* 小説親ページのレイアウト */
-.novel-parent {
-    position: relative;
-    padding-top: 40px;
-}
-
-.novel-header-container {
-    position: relative;
-    margin-bottom: 2rem;
-}
-
-.novel-title {
-    margin-bottom: 0.5rem;
-}
-
-/* お気に入りボタンのスタイル */
-.favorite-button-container {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-}
-
-.favorite-button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    outline: none;
-    padding: 0;
-    transition: transform 0.3s ease;
-}
-
-.favorite-button:hover {
-    transform: scale(1.1);
-}
-
-.favorite-button svg {
-    width: 30px;
-    height: 30px;
-    fill: none;
-    stroke: var(--primary-color);
-    stroke-width: 2;
-    transition: all 0.3s ease;
-}
-
-.favorite-button:hover svg {
-    stroke: var(--primary-light);
-}
-
-.favorite-button.active svg {
-    fill: var(--primary-color);
-    stroke: none;
-    animation: pulse 0.3s ease-in-out;
-}
-
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.2); }
-    100% { transform: scale(1); }
-}
-
-/* 小説の説明（あらすじ） */
-.novel-description {
-    margin-top: 1rem;
-    padding: 1rem 0;
-}
-
-/* エピソード一覧 */
-.novel-chapters {
-    margin-top: 2rem;
-}
-
-.chapter {
-    margin-bottom: 1.5rem;
-}
-
-.chapter-title {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: var(--primary-color);
-    margin-bottom: 0.5rem;
-}
-
-.episode-list {
-    list-style-type: none;
-    padding-left: 0;
-}
-
-.episode-item {
-    margin-bottom: 0.5rem;
-}
-
-.episode-link {
-    display: block;
-    color: var(--link-color);
-    text-decoration: none;
-    font-weight: 500;
-    margin-bottom: 0.2rem;
-}
-
-.episode-link:hover {
-    color: var(--link-hover-color);
-}
-
-.episode-date {
-    display: block;
-    font-size: 0.9rem;
-    color: var(--text-lighter);
-}
-
-/* エピソードナビゲーション */
-.novel-navigation {
-    margin: 1rem 0;
-}
-
-.nav-table {
+/* 検索タブのスタイル */
+.search-tabs {
+    display: flex;
     width: 100%;
-    table-layout: fixed;
-    border-collapse: collapse;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid var(--border-light);
 }
 
-.nav-cell {
-    border: 1px solid var(--primary-color);
-    padding: 0;
-}
-
-.nav-cell.toc {
-    width: 20%;
-}
-
-.nav-cell.prev,
-.nav-cell.next {
-    width: 40%;
-}
-
-.nav-link {
-    display: block;
-    padding: 0.5rem;
-    color: var(--primary-color);
-    text-decoration: none;
-    text-align: center;
-    transition: background-color 0.3s, color 0.3s;
-}
-
-.nav-link:hover {
-    background-color: var(--primary-color);
-    color: var(--bg-color);
-}
-
-.nav-link.disabled {
-    color: #cccccc;
-    cursor: not-allowed;
-}
-
-.nav-link.disabled:hover {
-    background-color: transparent;
-    color: #cccccc;
-}
-
-.nav-cell.toc .nav-link {
-    background-color: transparent;
-}
-
-.nav-cell.toc .nav-link:hover {
-    color: var(--bg-color);
-}
-
-/* マイページ用スタイル */
-.favorite-novels, .user-info {
-    margin-bottom: 2rem;
-}
-
-.favorite-novels h2, .user-info h2 {
-    font-size: 1.4rem;
+.search-tab {
+    flex: 1;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    background-color: var(--tag-bg-color);
+    color: var(--text-color);
+    border: none;
+    border-radius: 5px 5px 0 0;
     font-weight: bold;
-    color: var(--text-light);
-    margin-bottom: 0.5rem;
-    padding-bottom: 0.3rem;
+    transition: background-color 0.3s;
+    text-align: center;
 }
 
-.info-item {
+.search-tab.active {
+    background-color: var(--tag-hover-bg-color);
+    color: var(--text-color);
+}
+
+.search-content {
+    width: 100%;
+}
+
+.search-panel {
+    display: none;
+}
+
+.search-panel.active {
+    display: block;
+}
+
+/* タグクラウドのスタイル */
+.tag-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
     margin-bottom: 1rem;
 }
 
-.info-item label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 0.3rem;
+.tag-cloud .novel-tag,
+.novel-item-tags li {
+    display: inline-block;
+    padding: 0.3em 0.8em;
+    font-size: 0.85em;
+    font-weight: 500;
+    background-color: var(--tag-bg-color);
+    color: var(--tag-text-color);
+    border-radius: 20px;
+    transition: all 0.3s ease;
+    cursor: pointer;
 }
 
-.message {
-    display: none;
-    padding: 1rem;
-    margin-top: 1rem;
-    border-radius: 3px;
-    font-weight: bold;
+.tag-cloud .novel-tag:before,
+.novel-item-tags li:before {
+    content: "#";
+    margin-right: 0.2em;
+    opacity: 0.7;
 }
 
-.success {
-    background-color: var(--success-bg);
-    color: var(--success-text);
-    border: 1px solid var(--success-border);
+.tag-cloud .novel-tag:hover,
+.novel-item-tags li:hover {
+    background-color: var(--tag-hover-bg-color);
+    transform: translateY(-2px);
+    box-shadow: var(--tag-hover-shadow);
 }
 
-.error {
-    background-color: var(--error-bg);
-    color: var(--error-text);
-    border: 1px solid var(--error-border);
+.tag-cloud .novel-tag.active {
+    background-color: var(--tag-active-bg-color);
+    color: var(--tag-active-color);
+    transform: translateY(-2px);
+    box-shadow: var(--tag-hover-shadow);
+}
+
+@keyframes tagPulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.tag-cloud .novel-tag:active {
+    animation: tagPulse 0.3s ease-in-out;
 }

@@ -1,14 +1,22 @@
 jQuery(document).ready(function($) {
     var $searchInput = $('#novel-search-input');
     var $searchButton = $('#novel-search-button');
+    var $tagSearchButton = $('#tag-search-button');
     var $sortSelect = $('#novel-sort-select');
     var $limitedEpisodesFilter = $('#limited-episodes-filter');
     var $novelList = $('#novel-list');
 
-    function performSearch() {
+    function performSearch(searchType) {
         var query = $searchInput.val();
         var sort = $sortSelect.val();
         var limitedEpisodes = $limitedEpisodesFilter.is(':checked');
+        var selectedTags = [];
+
+        if (searchType === 'tag') {
+            $('.tag-cloud .novel-tag.active').each(function() {
+                selectedTags.push($(this).text().replace('#', '').trim());
+            });
+        }
 
         $.ajax({
             url: novelListAjax.ajaxurl,
@@ -17,7 +25,9 @@ jQuery(document).ready(function($) {
                 action: 'search_novel_parents',
                 query: query,
                 sort: sort,
-                limited_episodes: limitedEpisodes
+                limited_episodes: limitedEpisodes,
+                tags: selectedTags,
+                search_type: searchType
             },
             success: function(response) {
                 if (response.success) {
@@ -32,12 +42,41 @@ jQuery(document).ready(function($) {
         });
     }
 
-    $searchButton.on('click', performSearch);
+    $searchButton.on('click', function() {
+        performSearch('text');
+    });
+    
+    $tagSearchButton.on('click', function() {
+        performSearch('tag');
+    });
     
     $searchInput.on('keypress', function(e) {
         if (e.which == 13) {
-            performSearch();
+            performSearch('text');
             return false;
         }
+    });
+
+    $sortSelect.on('change', function() {
+        performSearch($('.search-tab.active').data('tab') === 'text-search' ? 'text' : 'tag');
+    });
+
+    // タブ切り替え
+    $('.search-tab').on('click', function() {
+        $('.search-tab').removeClass('active');
+        $(this).addClass('active');
+        $('.search-panel').removeClass('active');
+        $('#' + $(this).data('tab')).addClass('active');
+    });
+
+    // タグの選択状態を切り替える
+    $('.tag-cloud .novel-tag').on('click', function() {
+        $(this).toggleClass('active');
+        
+        // クリックアニメーションを追加
+        $(this).addClass('clicked');
+        setTimeout(() => {
+            $(this).removeClass('clicked');
+        }, 300);
     });
 });

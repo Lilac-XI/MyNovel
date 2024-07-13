@@ -25,17 +25,17 @@
             <tr>
                 <td class="nav-cell prev">
                     <?php if ($prev_post): ?>
-                        <a href="<?php echo get_permalink($prev_post->ID); ?>" class="nav-link"><< 前の話</a>
+                        <a href="<?php echo get_permalink($prev_post->ID); ?>" class="nav-link nav-reset"><< 前の話</a>
                     <?php else: ?>
                         <span class="nav-link disabled"><< 前の話</span>
                     <?php endif; ?>
                 </td>
                 <td class="nav-cell toc">
-                    <a href="<?php echo get_permalink($parent_id); ?>" class="nav-link">目次</a>
+                    <a href="<?php echo get_permalink($parent_id); ?>" class="nav-link nav-reset">目次</a>
                 </td>
                 <td class="nav-cell next">
                     <?php if ($next_post): ?>
-                        <a href="<?php echo get_permalink($next_post->ID); ?>" class="nav-link">次の話 >></a>
+                        <a href="<?php echo get_permalink($next_post->ID); ?>" class="nav-link nav-reset">次の話 >></a>
                     <?php else: ?>
                         <span class="nav-link disabled">次の話 >></span>
                     <?php endif; ?>
@@ -55,17 +55,17 @@
             <tr>
                 <td class="nav-cell prev">
                     <?php if ($prev_post): ?>
-                        <a href="<?php echo get_permalink($prev_post->ID); ?>" class="nav-link"><< 前の話</a>
+                        <a href="<?php echo get_permalink($prev_post->ID); ?>" class="nav-link nav-reset"><< 前の話</a>
                     <?php else: ?>
                         <span class="nav-link disabled"><< 前の話</span>
                     <?php endif; ?>
                 </td>
                 <td class="nav-cell toc">
-                    <a href="<?php echo get_permalink($parent_id); ?>" class="nav-link">目次</a>
+                    <a href="<?php echo get_permalink($parent_id); ?>" class="nav-link nav-reset">目次</a>
                 </td>
                 <td class="nav-cell next">
                     <?php if ($next_post): ?>
-                        <a href="<?php echo get_permalink($next_post->ID); ?>" class="nav-link">次の話 >></a>
+                        <a href="<?php echo get_permalink($next_post->ID); ?>" class="nav-link nav-reset">次の話 >></a>
                     <?php else: ?>
                         <span class="nav-link disabled">次の話 >></span>
                     <?php endif; ?>

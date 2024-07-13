@@ -8,9 +8,43 @@ get_header(); ?>
     <h2 class="novel-list-title">小説一覧</h2>
     
     <div class="novel-search-sort">
-        <div class="novel-search">
-            <input type="text" id="novel-search-input" placeholder="小説を検索">
-            <button id="novel-search-button">検索</button>
+        <div class="search-tabs">
+            <button class="search-tab active" data-tab="text-search">テキスト検索</button>
+            <button class="search-tab" data-tab="tag-search">タグ検索</button>
+        </div>
+        <div class="search-content">
+            <div class="search-panel active" id="text-search">
+                <div class="novel-search">
+                    <input type="text" id="novel-search-input" placeholder="小説を検索">
+                    <button id="novel-search-button">検索</button>
+                </div>
+            </div>
+            <div class="search-panel" id="tag-search">
+                <div class="tag-cloud">
+                    <?php
+                    // 小説親のメタ情報からタグを取得
+                    $args = array(
+                        'post_type' => 'novel_parent',
+                        'posts_per_page' => -1,
+                    );
+                    $novel_parents = get_posts($args);
+                    $all_tags = array();
+                    foreach ($novel_parents as $novel) {
+                        $tags = get_post_meta($novel->ID, 'novel_tags', true);
+                        if (is_array($tags)) {
+                            $all_tags = array_merge($all_tags, $tags);
+                        }
+                    }
+                    $unique_tags = array_unique($all_tags);
+                    foreach ($unique_tags as $tag) {
+                        echo '<span class="novel-tag">' . esc_html($tag) . '</span>';
+                    }
+                    ?>
+                </div>
+                <div class="novel-search">
+                    <button id="tag-search-button">検索</button>
+                </div>
+            </div>
         </div>
         <div class="novel-sort">
             <select id="novel-sort-select">
