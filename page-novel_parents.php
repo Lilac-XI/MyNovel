@@ -14,15 +14,15 @@ get_header(); ?>
         </div>
         <div class="search-content">
             <div class="search-panel active" id="text-search">
+                <div class="novel-search">
+                    <input type="text" id="novel-search-input" placeholder="小説を検索">
+                    <button id="novel-search-button">検索</button>
+                </div>
                 <div class="novel-filter">
                     <label>
                         <input type="checkbox" id="limited-episodes-filter">
                         限定エピソードあり
                     </label>
-                </div>
-                <div class="novel-search">
-                    <input type="text" id="novel-search-input" placeholder="小説を検索">
-                    <button id="novel-search-button">検索</button>
                 </div>
             </div>
             <div class="search-panel" id="tag-search">
