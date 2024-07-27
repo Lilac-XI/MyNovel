@@ -11,3 +11,1097 @@ Text Domain: your-theme-textdomain
 */
 
 /* The rest of the styles are now in separate CSS files */
+
+/* 基本スタイル */
+body {
+    font-family: 'Noto Sans JP', sans-serif;
+    line-height: 1.8;
+    color: #333;
+    background-color: #fafafa;
+    margin: 0;
+    padding: 0;
+}
+
+/* ヘッダー、ナビゲーション、フッター共通スタイル */
+.novel-header, .novel-nav, .novel-footer {
+    background-color: #ffffff;
+    color: #333;
+    padding: 1rem;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* ヘッダー */
+.novel-header {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+}
+
+.novel-header .site-title {
+    margin: 0;
+    font-size: 1.8rem;
+}
+
+.novel-header .site-title a {
+    color: #5d4157;
+    text-decoration: none;
+}
+
+/* フッター */
+.novel-footer {
+    margin-top: 2rem;
+    font-size: 0.8rem;
+}
+
+:root {
+    --primary-color: #5d4157;
+    --primary-light: #8e7a8e;
+    --text-color: #333;
+    --text-light: #4a4a4a;
+    --text-lighter: #666;
+    --border-color: #b3a0a0;
+    --border-light: #e6d7e6;
+    --bg-color: #ffffff;
+    --success-bg: #d4edda;
+    --success-text: #155724;
+    --success-border: #c3e6cb;
+    --error-bg: #f8d7da;
+    --error-text: #721c24;
+    --error-border: #f5c6cb;
+    --tag-bg-color: #5d4157;
+    --tag-text-color: #e0e0e0;
+    --tag-hover-bg-color: #6d4f67;
+    --tag-hover-shadow: 0 2px 4px rgba(224, 224, 224, 0.2);
+    --tag-active-bg-color: #9932cc;
+    --tag-active-text-color: #ffffff;
+    --tag-active-shadow-color: rgba(153, 50, 204, 0.4);
+    --link-color: #722561;
+    --link-hover-color: #863173;
+}
+
+body a {
+    color: var(--link-color);
+    text-decoration: none;
+}
+
+/* 検索と並び替え */
+.novel-search-sort {
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.novel-search {
+    display: flex;
+    margin-bottom: 0.5rem;
+    width: 100%;
+}
+
+.novel-search input, .info-item input {
+    flex-grow: 1;
+    padding: 0.5rem;
+    font-size: 0.9rem;
+    border: 1px solid var(--border-color);
+    border-radius: 3px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.novel-search button, .update-button {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    background-color: var(--primary-color);
+    color: var(--bg-color);
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    min-width: 60px;
+    white-space: nowrap;
+    text-align: center;
+}
+
+.novel-search button:hover, .update-button:hover {
+    background-color: var(--primary-light);
+}
+
+.novel-sort {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+}
+
+.novel-filter input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--primary-color);
+    border-radius: 3px;
+    background-color: var(--bg-color);
+    vertical-align: middle;
+    margin-right: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.novel-filter input[type="checkbox"]:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.novel-filter input[type="checkbox"]:checked::after {
+    content: '\2714';
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--bg-color);
+    font-size: 14px;
+    height: 100%;
+}
+
+.novel-filter input[type="checkbox"]:hover {
+    border-color: var(--primary-light);
+}
+
+.novel-sort select {
+    padding: 0.5rem;
+    font-size: 0.9rem;
+    border: 1px solid var(--border-color);
+    border-radius: 3px;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    width: 100%;
+}
+
+/* 小説リスト */
+.novel-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.novel-list-title {
+    text-align: center;
+    margin-bottom: 1rem;
+    font-size: 1.8rem;
+    color: var(--primary-color);
+}
+
+.novel-item {
+    border-bottom: 1px solid var(--border-light);
+    padding-top: 0.8rem;
+    padding-bottom: 0.8rem;
+}
+
+.novel-item:last-child {
+    border-bottom: none;
+}
+
+.novel-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.novel-item-tags {
+    margin: 0.5em 0 0.8em;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5em;
+}
+
+.novel-item-tags li {
+    display: inline-block;
+    padding: 0.3em 0.8em;
+    font-size: 0.85em;
+    font-weight: 500;
+    background-color: var(--tag-bg-color);
+    color: var(--tag-text-color);
+    border-radius: 20px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.novel-item-tags li:before {
+    content: "#";
+    margin-right: 0.2em;
+    opacity: 0.7;
+}
+
+.novel-item-tags li:hover {
+    background-color: var(--tag-hover-bg-color);
+    transform: translateY(-2px);
+    box-shadow: var(--tag-hover-shadow);
+}
+
+.novel-item-title {
+    font-size: 1.2rem;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    flex-grow: 1;
+}
+
+.novel-item-title a {
+    color: var(--link-color);
+    text-decoration: none;
+    transition: color 0.3s;
+    word-break: break-word;
+}
+
+.novel-item-title a:hover {
+    color: var(--link-hover-color);
+    text-decoration: underline;
+}
+
+.novel-item-description {
+    font-size: 0.95rem;
+    color: var(--text-light);
+    margin: 0;
+    padding: 0.5rem 0;
+    font-weight: 500;
+}
+
+.novel-item-info {
+    font-size: 0.9rem;
+    color: var(--text-lighter);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 0.5rem;
+    flex-wrap: wrap;
+    font-weight: 600;
+}
+
+.novel-item-info a {
+    color: var(--link-color);
+    text-decoration: none;
+}
+
+.novel-item-info a:hover {
+    color: var(--link-hover-color);
+    text-decoration: underline;
+}
+
+/* 検索タブのスタイル */
+.search-tabs {
+    display: flex;
+    width: 100%;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid var(--border-light);
+}
+
+.search-tab {
+    flex: 1;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    background-color: var(--tag-bg-color);
+    color: var(--tag-text-color);
+    border: none;
+    border-radius: 5px 5px 0 0;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    text-align: center;
+}
+
+.search-tab.active {
+    background-color: var(--tag-hover-bg-color);
+    color: var(--tag-text-color);
+}
+
+.search-content {
+    width: 100%;
+}
+
+.search-panel {
+    display: none;
+}
+
+.search-panel.active {
+    display: block;
+}
+
+/* タグクラウドのスタイル */
+.tag-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 1rem;
+}
+
+.tag-cloud .novel-tag,
+.novel-item-tags li {
+    display: inline-block;
+    padding: 0.3em 0.8em;
+    font-size: 0.85em;
+    font-weight: 500;
+    background-color: var(--tag-bg-color);
+    color: var(--tag-text-color);
+    border-radius: 20px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.tag-cloud .novel-tag:before,
+.novel-item-tags li:before {
+    content: "#";
+    margin-right: 0.2em;
+    opacity: 0.7;
+}
+
+.tag-cloud .novel-tag:hover,
+.novel-item-tags li:hover {
+    background-color: var(--tag-hover-bg-color);
+    transform: translateY(-2px);
+    box-shadow: var(--tag-hover-shadow);
+}
+
+.tag-cloud .novel-tag.active {
+    background-color: var(--tag-active-bg-color);
+    color: var(--tag-active-text-color);
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px var(--tag-active-shadow-color);
+}
+
+@keyframes tagPulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.tag-cloud .novel-tag:active {
+    animation: tagPulse 0.3s ease-in-out;
+}
+
+.tag-search-button-container {
+    display: flex;
+    justify-content: center;
+    margin: 10px 0px;
+}
+
+#tag-search-button {
+    padding: 8px 20px;
+    font-size: 1em;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#tag-search-button:hover {
+    background-color: var(--primary-light);
+}
+
+.tag-groups {
+    margin-bottom: 20px;
+}
+
+.tag-group {
+    margin-bottom: 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.tag-group-name {
+    font-size: 1.1em;
+    font-weight: bold;
+    margin: 0;
+    padding: 10px 15px;
+    background-color: #f5f5f5;
+    color: #5d4157;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.tag-group-name:hover {
+    background-color: #ebebeb;
+}
+
+.toggle-icon {
+    font-size: 1.2em;
+    transition: transform 0.3s ease;
+}
+
+.tag-group.active .toggle-icon {
+    transform: rotate(45deg);
+}
+
+.tag-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 5px;
+    background-color: #ffffff;
+    margin-bottom: 0;
+}
+
+.novel-tag {
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: #f0e6f5;
+    color: #5d4157;
+    border-radius: 20px;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.novel-tag:hover,
+.novel-tag.active {
+    background-color: #d4b8e0;
+    transform: translateY(-2px);
+}
+
+/* 小説親ページのレイアウト */
+.novel-parent {
+    position: relative;
+    padding-top: 40px;
+}
+
+.novel-header-container {
+    position: relative;
+    margin-bottom: 2rem;
+}
+
+.novel-title {
+    margin-bottom: 0.5rem;
+}
+
+/* お気に入りボタンのスタイル */
+.favorite-button-container {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.favorite-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    padding: 0;
+    transition: transform 0.3s ease;
+}
+
+.favorite-button:hover {
+    transform: scale(1.1);
+}
+
+.favorite-button svg {
+    width: 30px;
+    height: 30px;
+    fill: none;
+    stroke: var(--primary-color);
+    stroke-width: 2;
+    transition: all 0.3s ease;
+}
+
+.favorite-button:hover svg {
+    stroke: var(--primary-light);
+}
+
+.favorite-button.active svg {
+    fill: var(--primary-color);
+    stroke: none;
+    animation: pulse 0.3s ease-in-out;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+/* 小説の説明（あらすじ） */
+.novel-description {
+    margin-top: 1rem;
+    padding: 1rem 0;
+}
+
+/* エピソード一覧 */
+.novel-chapters {
+    margin-top: 2rem;
+}
+
+.chapter {
+    margin-bottom: 1.5rem;
+}
+
+.chapter-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.episode-list {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.episode-item {
+    margin-bottom: 0.5rem;
+}
+
+.episode-link {
+    display: block;
+    color: var(--link-color);
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: 0.2rem;
+}
+
+.episode-link:hover {
+    color: var(--link-hover-color);
+}
+
+.episode-date {
+    display: block;
+    font-size: 0.9rem;
+    color: var(--text-lighter);
+}
+
+/* エピソードナビゲーション */
+.novel-navigation {
+    margin: 1rem 0;
+}
+
+.nav-table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+.nav-cell {
+    border: 1px solid var(--primary-color);
+    padding: 0;
+}
+
+.nav-cell.toc {
+    width: 20%;
+}
+
+.nav-cell.prev,
+.nav-cell.next {
+    width: 40%;
+}
+
+.nav-link {
+    display: block;
+    padding: 0.5rem;
+    color: var(--primary-color);
+    text-decoration: none;
+    text-align: center;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.nav-link:hover {
+    background-color: var(--primary-color);
+    color: var(--bg-color);
+}
+
+.nav-link.disabled {
+    color: #cccccc;
+    cursor: not-allowed;
+}
+
+.nav-link.disabled:hover {
+    background-color: transparent;
+    color: #cccccc;
+}
+
+.nav-cell.toc .nav-link {
+    background-color: transparent;
+}
+
+.nav-cell.toc .nav-link:hover {
+    color: var(--bg-color);
+}
+
+/* マイページ用スタイル */
+.favorite-novels, .user-info {
+    margin-bottom: 2rem;
+}
+
+.favorite-novels h2, .user-info h2 {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: var(--text-light);
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.3rem;
+}
+
+.info-item {
+    margin-bottom: 1rem;
+}
+
+.info-item label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 0.3rem;
+}
+
+.message {
+    display: none;
+    padding: 1rem;
+    margin-top: 1rem;
+    border-radius: 3px;
+    font-weight: bold;
+}
+
+.success {
+    background-color: var(--success-bg);
+    color: var(--success-text);
+    border: 1px solid var(--success-border);
+}
+
+.error {
+    background-color: var(--error-bg);
+    color: var(--error-text);
+    border: 1px solid var(--error-border);
+}
+
+/* CSS変数の定義 */
+body.dark-mode {
+    background-color: #1a1a1a;
+    --bg-color: #2a2a2a;
+    --text-color: #e0e0e0;
+    --link-color: #a47cca;
+    --link-hover-color: #cea5f2;
+    --border-color: #444;
+    --input-bg-color: #333;
+    --input-border-color: #555;
+    --button-bg-color: #5d4157;
+    --button-hover-bg-color: #8e7a8e;
+    --tag-bg-color: #5d4157;
+    --tag-hover-bg-color: #6d4f67;
+    --tag-hover-shadow: 0 2px 4px rgba(224, 224, 224, 0.2);
+    --tag-active-bg-color: #9932cc;
+    --tag-active-text-color: #ffffff;
+    --tag-active-shadow-color: rgba(153, 50, 204, 0.4);
+    --tag-group-button-hover-bg-color: #272727;
+}
+
+/* 全体的なレイアウト要素のスタイル */
+body.dark-mode .novel-header,
+body.dark-mode .novel-nav,
+body.dark-mode .novel-footer,
+body.dark-mode .novel-wrapper,
+body.dark-mode .novel-description {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+body.dark-mode .novel-wrapper {
+    box-shadow: 0 0 10px rgba(255,255,255,0.1);
+}
+
+/* テキストと背景色の調整 */
+body.dark-mode .site-title a,
+body.dark-mode .novel-nav .nav-menu a,
+body.dark-mode .novel-title,
+body.dark-mode .mypage-title,
+body.dark-mode .novel-list-title,
+body.dark-mode .chapter-title,
+body.dark-mode .nav-link,
+body.dark-mode .favorite-novels h2, 
+body.dark-mode .user-info h2,
+body.dark-mode .info-item label,
+body.dark-mode .novel-filter label {
+    color: var(--text-color);
+}
+
+body.dark-mode .novel-item-description,
+body.dark-mode .novel-description,
+body.dark-mode .novel-content {
+    color: #ffffff;
+}
+
+body.dark-mode .novel-item-info,
+body.dark-mode .episode-date {
+    color: #b0b0b0;
+}
+
+body.dark-mode .novel-item {
+    border-bottom-color: var(--border-color);
+}
+
+/* ナビゲーションとリンクのスタイル */
+body.dark-mode .novel-nav .nav-menu a:hover,
+body.dark-mode .favorite-button:hover svg {
+    color: #ffffff;
+}
+
+body.dark-mode a {
+    color: var(--link-color);
+    text-decoration: none;
+}
+
+body.dark-mode a:hover {
+    color: var(--link-hover-color);
+}
+
+body.dark-mode .nav-link:hover,
+body.dark-mode .nav-cell.toc .nav-link:hover {
+    background-color: var(--text-color);
+    color: var(--bg-color);
+}
+
+body.dark-mode .nav-link.disabled,
+body.dark-mode .nav-link.disabled:hover {
+    color: #666666;
+    background-color: transparent;
+}
+
+/* フォームと入力要素のスタイル */
+body.dark-mode .novel-search input, 
+body.dark-mode .info-item input,
+body.dark-mode .novel-sort select {
+    background-color: var(--input-bg-color);
+    color: var(--text-color);
+    border-color: var(--input-border-color);
+}
+
+body.dark-mode .novel-search button, 
+body.dark-mode .update-button {
+    background-color: var(--button-bg-color);
+    color: #ffffff;
+    min-width: 60px;
+    white-space: nowrap;
+    text-align: center;
+}
+
+body.dark-mode .novel-search button:hover, 
+body.dark-mode .update-button:hover {
+    background-color: var(--button-hover-bg-color);
+}
+
+body.dark-mode .novel-filter input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--text-color);
+    border-radius: 3px;
+    background-color: var(--bg-color);
+    vertical-align: middle;
+    margin-right: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+body.dark-mode .novel-filter input[type="checkbox"]:checked {
+    background-color: var(--button-bg-color);
+    border-color: var(--button-bg-color);
+}
+
+body.dark-mode .novel-filter input[type="checkbox"]:checked::after {
+    content: '\2714';
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--text-color);
+    font-size: 14px;
+    height: 100%;
+}
+
+body.dark-mode .novel-filter input[type="checkbox"]:hover {
+    border-color: var(--button-hover-bg-color);
+}
+
+/* タグのスタイル */
+body.dark-mode .novel-item-tags li,
+body.dark-mode .tag-cloud .novel-tag {
+    background-color: var(--tag-bg-color);
+    color: var(--text-color);
+    transition: all 0.3s ease;
+}
+
+body.dark-mode .novel-item-tags li:hover,
+body.dark-mode .tag-cloud .novel-tag:hover {
+    background-color: var(--tag-hover-bg-color);
+    transform: translateY(-2px);
+    box-shadow: var(--tag-hover-shadow);
+}
+
+body.dark-mode .tag-cloud .novel-tag.active {
+    background-color: var(--tag-active-bg-color);
+    color: var(--tag-active-color);
+    transform: translateY(-2px);
+    box-shadow: var(--tag-hover-shadow);
+}
+
+body.dark-mode .novel-item-tags li:before,
+body.dark-mode .tag-cloud .novel-tag:before {
+    opacity: 0.9;
+}
+
+/* ダークモードスイッチのスタイル */
+.dark-mode-switch {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "☀️";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+}
+
+body.dark-mode .slider {
+    background-color: var(--button-bg-color);
+}
+
+body.dark-mode .slider:before {
+    background-color: var(--text-color);
+}
+
+body.dark-mode input:checked + .slider {
+    background-color: var(--button-hover-bg-color);
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+    content: "🌙";
+}
+
+/* 検索タブのスタイル */
+body.dark-mode .search-tabs {
+    border-bottom: 2px solid var(--tag-bg-color);
+}
+
+body.dark-mode .search-tab {
+    background-color: var(--tag-bg-color);
+    color: var(--text-color);
+}
+
+body.dark-mode .search-tab.active {
+    background-color: var(--tag-hover-bg-color);
+    color: var(--text-color);
+}
+
+body.dark-mode .tag-groups {
+    background-color: var(--bg-color);
+}
+
+body.dark-mode .tag-group {
+    border-color: var(--border-color);
+}
+
+body.dark-mode .tag-group-name {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+body.dark-mode .tag-group-name:hover {
+    background-color: var(--tag-group-button-hover-bg-color);
+}
+
+body.dark-mode .tag-cloud {
+    background-color: var(--bg-color);
+}
+
+body.dark-mode .novel-tag {
+    background-color: var(--tag-bg-color);
+    color: var(--text-color);
+}
+
+body.dark-mode .novel-tag:hover,
+body.dark-mode .novel-tag.active {
+    background-color: var(--tag-hover-bg-color);
+    color: var(--bg-color);
+}
+
+body.dark-mode .toggle-icon {
+    color: var(--text-color);
+}
+
+body.dark-mode #tag-search-button {
+    background-color: var(--button-bg-color);
+    color: var(--text-color);
+}
+
+/* メインコンテンツ */
+.novel-wrapper {
+    max-width: 800px;
+    margin: 1rem auto;
+    background-color: #ffffff;
+    padding: 1rem;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    border-radius: 5px;
+}
+
+.novel-header-container {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.novel-title, .mypage-title {
+    font-size: 1.8rem;
+    color: #5d4157;
+    text-align: center;
+    margin: 1rem 0;
+}
+
+/* ヘッダー */
+.novel-header {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+}
+
+.novel-header .site-title {
+    margin: 0;
+    font-size: 1.8rem;
+    text-align: center;
+}
+
+/* ダークモードスイッチ */
+.dark-mode-switch {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* ナビゲーション */
+.novel-nav .nav-menu {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.novel-nav .nav-menu li {
+    margin: 0 1rem;
+}
+
+.novel-nav .nav-menu a {
+    color: #5d4157;
+    text-decoration: none;
+    font-size: 1.1rem;
+    transition: color 0.3s;
+}
+
+.novel-nav .nav-menu a:hover {
+    color: #8e7a8e;
+}
+
+/* レスポンシブデザイン */
+@media (max-width: 600px) {
+    .novel-wrapper {
+        padding: 0.8rem;
+        margin: 0.8rem;
+    }
+    .novel-title, .mypage-title {
+        font-size: 1.6rem;
+    }
+    .novel-item-info {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .novel-item-info span {
+        margin-bottom: 0.3rem;
+    }
+    .novel-search-sort {
+        width: 100%;
+    }
+    .novel-sort {
+        margin-top: 0.5rem;
+    }
+    .info-item input {
+        width: 100%;
+    }
+    .favorite-button-container {
+        position: static;
+        margin-top: 0.5rem;
+        text-align: right;
+    }
+    .nav-link {
+        padding: 0.3rem;
+        font-size: 0.9rem;
+    }
+    
+    /* 検索ボタンのレスポンシブスタイル */
+    .novel-search button {
+        padding: 0.5rem;
+        font-size: 0.8rem;
+        min-width: 50px;
+    }
+    
+    /* ダークモード時の検索ボタンのレスポンシブスタイル */
+    body.dark-mode .novel-search button {
+        padding: 0.5rem;
+        font-size: 0.8rem;
+        min-width: 50px;
+    }
+
+    .novel-search {
+        flex-direction: column;
+    }
+    .novel-search input, .novel-search button, .novel-sort select, .search-button {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+}
