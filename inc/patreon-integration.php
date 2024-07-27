@@ -180,3 +180,11 @@ function bulk_update_has_locked_child() {
 }
 // この関数を実行するためのURLを作成する場合は以下のようにします
 // add_action('admin_init', 'bulk_update_has_locked_child');
+
+function custom_logout_redirect($logout_url, $redirect) {
+    if (!current_user_can('manage_options')) {
+        $logout_url = add_query_arg('redirect_to', urlencode(home_url('/patreon-logout')), $logout_url);
+    }
+    return $logout_url;
+}
+add_filter('logout_url', 'custom_logout_redirect', 10, 2);

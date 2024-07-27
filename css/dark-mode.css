@@ -16,6 +16,7 @@ body.dark-mode {
     --tag-active-bg-color: #9932cc;
     --tag-active-text-color: #ffffff;
     --tag-active-shadow-color: rgba(153, 50, 204, 0.4);
+    --tag-group-button-hover-bg-color: #272727;
 }
 
 /* 全体的なレイアウト要素のスタイル */
@@ -250,5 +251,46 @@ body.dark-mode .search-tab {
 
 body.dark-mode .search-tab.active {
     background-color: var(--tag-hover-bg-color);
+    color: var(--text-color);
+}
+
+body.dark-mode .tag-groups {
+    background-color: var(--bg-color);
+}
+
+body.dark-mode .tag-group {
+    border-color: var(--border-color);
+}
+
+body.dark-mode .tag-group-name {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+body.dark-mode .tag-group-name:hover {
+    background-color: var(--tag-group-button-hover-bg-color);
+}
+
+body.dark-mode .tag-cloud {
+    background-color: var(--bg-color);
+}
+
+body.dark-mode .novel-tag {
+    background-color: var(--tag-bg-color);
+    color: var(--text-color);
+}
+
+body.dark-mode .novel-tag:hover,
+body.dark-mode .novel-tag.active {
+    background-color: var(--tag-hover-bg-color);
+    color: var(--bg-color);
+}
+
+body.dark-mode .toggle-icon {
+    color: var(--text-color);
+}
+
+body.dark-mode #tag-search-button {
+    background-color: var(--button-bg-color);
     color: var(--text-color);
 }

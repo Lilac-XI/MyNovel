@@ -61,10 +61,6 @@ jQuery(document).ready(function($) {
         performSearch($('.search-tab.active').data('tab') === 'text-search' ? 'text' : 'tag');
     });
 
-    $limitedEpisodesFilter.on('change', function() {
-        performSearch($('.search-tab.active').data('tab') === 'text-search' ? 'text' : 'tag');
-    });
-
     // タブ切り替え
     $('.search-tab').on('click', function() {
         $('.search-tab').removeClass('active');
@@ -77,16 +73,53 @@ jQuery(document).ready(function($) {
     $(document).on('click', '.tag-group-name', function() {
         var $tagGroup = $(this).parent('.tag-group');
         var $tagCloud = $tagGroup.find('.tag-cloud');
-        
-        $tagCloud.slideToggle(300);
-        $tagGroup.toggleClass('active');
-        
         var $icon = $(this).find('.toggle-icon');
-        $icon.text($tagGroup.hasClass('active') ? '−' : '+');
+        
+        $tagCloud.slideToggle(300, function() {
+            if ($tagCloud.is(':visible')) {
+                $icon.text('−');
+            } else {
+                $icon.text('+');
+            }
+        });
     });
 
-    // タグ選択時の処理
+    // タグの選択状態を切り替える
     $(document).on('click', '.novel-tag', function() {
         $(this).toggleClass('active');
+    });
+
+    // ページ読み込み時に全てのタググループを開く
+    $('.tag-cloud').show();
+    $('.toggle-icon').text('−');
+
+    // タッチデバイスでのホバー効果を制御
+    function removeHoverCssRule() {
+        if ('ontouchstart' in document.documentElement) {
+            var styleSheets = document.styleSheets;
+            for (var i = 0; i < styleSheets.length; i++) {
+                var styleSheet = styleSheets[i];
+                try {
+                    var cssRules = styleSheet.cssRules || styleSheet.rules;
+                    for (var j = 0; j < cssRules.length; j++) {
+                        var rule = cssRules[j];
+                        if (rule.selectorText && rule.selectorText.match(/:hover/gi)) {
+                            styleSheet.deleteRule(j);
+                            j--;
+                        }
+                    }
+                } catch (e) {
+                    console.log("Can't read the css rules of: " + styleSheet.href, e);
+                }
+            }
+        }
+    }
+
+    // ページ読み込み時に実行
+    removeHoverCssRule();
+
+    // Ajaxリクエスト完了後にも実行（動的に追加された要素にも適用するため）
+    $(document).ajaxComplete(function() {
+        removeHoverCssRule();
     });
 });

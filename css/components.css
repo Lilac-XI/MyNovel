@@ -333,7 +333,7 @@ body a {
 .tag-search-button-container {
     display: flex;
     justify-content: center;
-    margin-top: 15px;
+    margin: 10px 0px;
 }
 
 #tag-search-button {
@@ -392,7 +392,7 @@ body a {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    padding: 15px;
+    padding: 5px;
     background-color: #ffffff;
     margin-bottom: 0;
 }
@@ -414,6 +414,211 @@ body a {
     transform: translateY(-2px);
 }
 
-#tag-search-button {
-    margin-top: 15px;
+/* 小説親ページのレイアウト */
+.novel-parent {
+    position: relative;
+    padding-top: 40px;
+}
+
+.novel-header-container {
+    position: relative;
+    margin-bottom: 2rem;
+}
+
+.novel-title {
+    margin-bottom: 0.5rem;
+}
+
+/* お気に入りボタンのスタイル */
+.favorite-button-container {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.favorite-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    padding: 0;
+    transition: transform 0.3s ease;
+}
+
+.favorite-button:hover {
+    transform: scale(1.1);
+}
+
+.favorite-button svg {
+    width: 30px;
+    height: 30px;
+    fill: none;
+    stroke: var(--primary-color);
+    stroke-width: 2;
+    transition: all 0.3s ease;
+}
+
+.favorite-button:hover svg {
+    stroke: var(--primary-light);
+}
+
+.favorite-button.active svg {
+    fill: var(--primary-color);
+    stroke: none;
+    animation: pulse 0.3s ease-in-out;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+/* 小説の説明（あらすじ） */
+.novel-description {
+    margin-top: 1rem;
+    padding: 1rem 0;
+}
+
+/* エピソード一覧 */
+.novel-chapters {
+    margin-top: 2rem;
+}
+
+.chapter {
+    margin-bottom: 1.5rem;
+}
+
+.chapter-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.episode-list {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.episode-item {
+    margin-bottom: 0.5rem;
+}
+
+.episode-link {
+    display: block;
+    color: var(--link-color);
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: 0.2rem;
+}
+
+.episode-link:hover {
+    color: var(--link-hover-color);
+}
+
+.episode-date {
+    display: block;
+    font-size: 0.9rem;
+    color: var(--text-lighter);
+}
+
+/* エピソードナビゲーション */
+.novel-navigation {
+    margin: 1rem 0;
+}
+
+.nav-table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+.nav-cell {
+    border: 1px solid var(--primary-color);
+    padding: 0;
+}
+
+.nav-cell.toc {
+    width: 20%;
+}
+
+.nav-cell.prev,
+.nav-cell.next {
+    width: 40%;
+}
+
+.nav-link {
+    display: block;
+    padding: 0.5rem;
+    color: var(--primary-color);
+    text-decoration: none;
+    text-align: center;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.nav-link:hover {
+    background-color: var(--primary-color);
+    color: var(--bg-color);
+}
+
+.nav-link.disabled {
+    color: #cccccc;
+    cursor: not-allowed;
+}
+
+.nav-link.disabled:hover {
+    background-color: transparent;
+    color: #cccccc;
+}
+
+.nav-cell.toc .nav-link {
+    background-color: transparent;
+}
+
+.nav-cell.toc .nav-link:hover {
+    color: var(--bg-color);
+}
+
+/* マイページ用スタイル */
+.favorite-novels, .user-info {
+    margin-bottom: 2rem;
+}
+
+.favorite-novels h2, .user-info h2 {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: var(--text-light);
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.3rem;
+}
+
+.info-item {
+    margin-bottom: 1rem;
+}
+
+.info-item label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 0.3rem;
+}
+
+.message {
+    display: none;
+    padding: 1rem;
+    margin-top: 1rem;
+    border-radius: 3px;
+    font-weight: bold;
+}
+
+.success {
+    background-color: var(--success-bg);
+    color: var(--success-text);
+    border: 1px solid var(--success-border);
+}
+
+.error {
+    background-color: var(--error-bg);
+    color: var(--error-text);
+    border: 1px solid var(--error-border);
 }

@@ -14,6 +14,12 @@ get_header(); ?>
         </div>
         <div class="search-content">
             <div class="search-panel active" id="text-search">
+                <div class="novel-filter">
+                    <label>
+                        <input type="checkbox" id="limited-episodes-filter">
+                        限定エピソードあり
+                    </label>
+                </div>
                 <div class="novel-search">
                     <input type="text" id="novel-search-input" placeholder="小説を検索">
                     <button id="novel-search-button">検索</button>
@@ -45,7 +51,7 @@ get_header(); ?>
                         if (!empty($tags)) {
                             echo '<div class="tag-group">';
                             echo '<h3 class="tag-group-name">' . esc_html($group->name) . ' <span class="toggle-icon">+</span></h3>';
-                            echo '<div class="tag-cloud" style="display: none;">';
+                            echo '<div class="tag-cloud" style="display: block;">';
                             foreach ($tags as $tag) {
                                 echo '<span class="novel-tag" data-tag-id="' . esc_attr($tag->term_id) . '">' . esc_html($tag->name) . '</span>';
                             }
@@ -84,7 +90,13 @@ get_header(); ?>
                     }
                     ?>
                 </div>
-                <div class="novel-search">
+                <div class="novel-filter">
+                    <label>
+                        <input type="checkbox" id="limited-episodes-filter">
+                        限定エピソードあり
+                    </label>
+                </div>
+                <div class="tag-search-button-container">
                     <button id="tag-search-button">検索</button>
                 </div>
             </div>
@@ -97,12 +109,6 @@ get_header(); ?>
                 <option value="popular">人気順</option>
             </select>
         </div>
-        <div class="novel-filter">
-            <label>
-                <input type="checkbox" id="limited-episodes-filter">
-                限定エピソードあり
-            </label>
-        </div>
     </div>
 
     <ul id="novel-list" class="novel-list">
@@ -110,8 +116,8 @@ get_header(); ?>
         $args = array(
             'post_type' => 'novel_parent',
             'posts_per_page' => -1,
-            'orderby' => 'menu_order',
-            'order' => 'ASC'
+            'orderby' => 'date',
+            'order' => 'DESC'
         );
         $novel_parents = new WP_Query($args);
 
